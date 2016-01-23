@@ -54,7 +54,7 @@ router.use(function(req, res, next) {
 
 //var path = require('path');
 
-app.get('/api/', function(req, res) {
+app.get('/', function(req, res) {
 	console.log("omg");
 	res.sendFile("index.html");
 });
@@ -133,7 +133,7 @@ router.route('/add/single')
 	});
 
 // post needs fields for each col in parse (name, expiration date, lifetime)
-app.use('/', router);
+app.use('', router);
 
 
 function match(text){
