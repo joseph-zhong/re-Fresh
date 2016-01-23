@@ -113,7 +113,7 @@ app.get('/',function(req,res){
 	res.sendfile(path.join(__dirname + '/index.html'));
 });
 
-router.use('/api/');
+app.use('/api', router);
 
 // needs an abreviation to look up (:abrv)
 router.route('/abrv/:abrv')
@@ -363,6 +363,14 @@ function getRecipe() {
 }
 
 function recRecipe(ingreds) {
+	var url = "";
+	if (ingreds.length > 0) {
+		url += ingreds[0].name.trim();
+		for (var i = 1; i < Math.min(3, ingres.length); i++) {
+			url += "," + ingreds[i].name.trim();
+		}
+	}
+	console.log(encodeURIComponent(url));
 	unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?ingredients=apples%2Cflour%2Csugar&limitLicense=false&number=5&ranking=1")
 	.header("X-Mashape-Key", "68sljwduiumshFCNWmjQRwB9a1T1p1sYYvNjsni2hRqvH6NZUe")
 	.header("Accept", "application/json")
@@ -389,7 +397,7 @@ function callBack(response) {
 
 
 
-getRecipe();
+//getRecipe();
 
 // START THE SERVER
 // =============================================================================
