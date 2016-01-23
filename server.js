@@ -52,22 +52,11 @@ router.use(function(req, res, next) {
 	next();
 });
 
-var path = require('path');
+//var path = require('path');
 
 app.get('/', function(req, res) {
-	//res.sendfile(path.join(__dirname + '/index.html'));
-	console.log("hello omg fuck");
-	var s = '/index.html';
-	console.log('/index.html');
-	res.sendFile(path.join('/index.html'), options, function (err) {
-		if (err) {
-			console.log(err);
-			res.status(err.status).end();
-		}
-		else {
-			console.log('Sent:', s);
-		}
-	});
+	console.log("omg");
+	res.sendFile("index.html");
 });
 
 /*router.route('/')
