@@ -6,7 +6,7 @@ var Parse = require('node-parse-api').Parse;
 
 var options = {
 	app_id : "2TEGFm48tpsJ7Ki02AbOsXKTbQZKzhc4RFhR7S7p",
-	api_key : "tFMOzm7J01GxnoPbGrHDAXGCsrGoeGrZR0Sao7Ny",
+	api_key : "tFMOzm7J01GxnoPbGrHDAXGCsrGoeGrZR0Sao7Ny"
 };
 
 var eapp_id = "a750fdb2";
@@ -85,9 +85,29 @@ router.use(function(req, res, next) {
 	next();
 });
 
-router.get('/', function(req, res){
-	res.sendfile(res.sendfile('./site/index.html', {root: __dirname }));
+var path    = require("path");
+
+app.get('/',function(req,res){
+	res.sendFile(path.join(__dirname + '/index.html'));
+	//__dirname : It will resolve to your project folder.
 });
+
+
+/*router.route('/')
+	.get(function(req, res) {
+		console.log("route");
+		//res.sendFile(path.join(__dirname, 'index.html'));
+		//res.sendFile(path.join(__dirname, 'index.html'));
+		//res.sendFile('index.html', { root: __dirname });
+		//res.sendfile(res.sendfile('/index.html', {root: __dirname }));
+
+		res.sendFile(path.join(__dirname + '/index.html'));
+});*/
+//
+//router.get('/site/index.html', function(req, res){
+//	res.sendFile(path.join(__dirname, '/site', 'index.html'));
+//	//res.sendfile(res.sendfile('/site/index.html', {root: __dirname }));
+//});
 
 // needs an abreviation to look up (:abrv)
 router.route('/abrv/:abrv')
@@ -149,7 +169,7 @@ router.route('/add/single')
 	});
 
 // post needs fields for each col in parse (name, expiration date, lifetime)
-app.use('/api', router);
+app.use('', router);
 
 
 function match(text){
