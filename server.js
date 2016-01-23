@@ -41,7 +41,7 @@ var cats = {
 	"broccoli" : "vegetables",
 	"bread" : "baked goods",
 	"eggs" : "poultry"
-}
+};
 
 var descriptions = {
 	"beef" : "8 oz",
@@ -55,7 +55,7 @@ var descriptions = {
 	"broccoli" : "4 stocks",
 	"bread" : "1 loaf",
 	"eggs" : "2 dozen"
-}
+};
 
 var abrv = {'bf' : 'beef',
   'mlk' : 'milk',
@@ -95,6 +95,7 @@ app.get('/',function(req,res){
 router.use(function(req, res, next) {
 	// do logging
 	res.header("Access-Control-Allow-Origin", "*");
+	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	console.log('API Being Accessed');
 	next();
@@ -102,27 +103,17 @@ router.use(function(req, res, next) {
 
 var path    = require("path");
 
+app.use(express.static(path.join(__dirname, './')));
+
+app.use("/styles",  express.static(__dirname + '/styles'));
+app.use("/js", express.static(__dirname + '/js'));
+app.use("/images",  express.static(__dirname + '/images'));
+
 app.get('/',function(req,res){
-	res.sendFile(path.join(__dirname + '/index.html'));
-	//__dirname : It will resolve to your project folder.
+	res.sendfile(path.join(__dirname + '/index.html'));
 });
 
-
-/*router.route('/')
-	.get(function(req, res) {
-		console.log("route");
-		//res.sendFile(path.join(__dirname, 'index.html'));
-		//res.sendFile(path.join(__dirname, 'index.html'));
-		//res.sendFile('index.html', { root: __dirname });
-		//res.sendfile(res.sendfile('/index.html', {root: __dirname }));
-
-		res.sendFile(path.join(__dirname + '/index.html'));
-});*/
-//
-//router.get('/site/index.html', function(req, res){
-//	res.sendFile(path.join(__dirname, '/site', 'index.html'));
-//	//res.sendfile(res.sendfile('/site/index.html', {root: __dirname }));
-//});
+router.use('/api/');
 
 // needs an abreviation to look up (:abrv)
 router.route('/abrv/:abrv')
@@ -133,7 +124,6 @@ router.route('/abrv/:abrv')
 		} else {
 			res.json(result + " and the expiration date is in " + groceries[result][0] + " day(s)");
 		}
-
 	});
 
 // needs a data field in the body with the list from the OCR algorithm 
@@ -182,10 +172,6 @@ router.route('/add/single')
 
 		res.json("done");
 	});
-
-// post needs fields for each col in parse (name, expiration date, lifetime)
-app.use('', router);
-
 
 function match(text){
 	var len=text.length;
