@@ -6,6 +6,7 @@ var postmates = new Postmates('cus_KeAkAy7GIWj1lF', 'b77414cb-ffdd-4e05-b10b-165
 var p = require('./postmates.js');
 var app        = express();
 var Parse = require('node-parse-api').Parse;
+var unirest = require('unirest');
 
 var options = {
 	app_id : "2TEGFm48tpsJ7Ki02AbOsXKTbQZKzhc4RFhR7S7p",
@@ -18,11 +19,11 @@ var eapp_key = "143b365c3f4cf72c75d73802ce735614";
 var parse = new Parse(options);
 
 var groceries = {
-	"beef" : [1,2],
+	"beef" : [2,3],
 	"milk" : [5, 7],
-	"chicken" : [1,2],
+	"chicken" : [2,3],
 	"bacon" : [7, 14],
-	"salmon" : [1, 2],
+	"salmon" : [2, 3],
 	"apples" : [10, 14],
 	"oranges" : [14, 21],
 	"potatoes" : [21, 35],
@@ -41,18 +42,18 @@ var cats = {
 	"oranges" : "fruits",
 	"potatoes" : "vegetables",
 	"broccoli" : "vegetables",
-	"bread" : "baked goods",
-	"eggs" : "poultry"
+	"bread" : "bakedGoods",
+	"eggs" : "eggs"
 };
 
 var descriptions = {
 	"beef" : "8 oz",
 	"milk" : "2 gallons",
 	"chicken" : "16 oz",
-	"bacon" : "32 oz",
+	"bacon" : "16 oz",
 	"salmon" : "9 oz",
-	"apples" : "10",
-	"oranges" : "10",
+	"apples" : "10 ct",
+	"oranges" : "10 ct",
 	"potatoes" : "1 sack",
 	"broccoli" : "4 stocks",
 	"bread" : "1 loaf",
@@ -79,6 +80,20 @@ var port     = process.env.PORT || 8080; // set our port
 
 var router = express.Router();
 
+
+var path    = require("path");
+
+app.use(express.static(path.join(__dirname, './')));
+
+app.use("/styles",  express.static(__dirname + '/styles'));
+app.use("/js", express.static(__dirname + '/js'));
+app.use("/images",  express.static(__dirname + '/images'));
+
+app.get('/',function(req,res){
+   res.sendfile(path.join(__dirname + '/index.html'));
+});
+
+
 // middleware to use for all requests
 router.use(function(req, res, next) {
 	// do logging
@@ -101,7 +116,7 @@ app.get('/',function(req,res){
 	res.sendfile(path.join(__dirname + '/index.html'));
 });
 
-router.use('/api/');
+app.use('/api', router);
 
 // needs an abreviation to look up (:abrv)
 router.route('/abrv/:abrv')
@@ -155,6 +170,11 @@ router.route('postmates')
 	.post(function(req, res) {
 		p.createDelivery(req.body.product, req.body.descript, req.body.stores,
 				req.body.name, req.body.homeAddress, res);
+	});
+
+router.route('/recommend/recipe')
+	.get(function(req, res) {
+		getRecipe(res);
 	});
 
 function match(text){
@@ -277,7 +297,7 @@ function addItemToParse(food) {
 	var item = {
 		"name" : food,
 		"expDate" : getNDaysFromNow(groceries[food][0]),
-		"lifetime" : groceries[food],
+		"lifetime" : groceries[food][0],
 		"description" : descriptions[food],
 		"category" : cats[food]
 	};
@@ -293,11 +313,60 @@ function getNDaysFromNow(n) {
 	return a;
 }
 
-function getReciepe() {
-	parse.find('foodEntry', null, function (err, response) {
+function getRecipe(res) {
+	parse.find('foodEntry', '', function (err, response) {
+		//console.log(response);
+		var success = response;
+		var arr = success["results"];
+		arr.sort(function(x, y){ 
+		    if (x.expDate < y.expDate) {
+		        return -1;
+		    }
+		    if (x.expDate > y.expDate) {
+		        return 1;
+		    }
+		    return 0;
+		});
 
+		recRecipe(arr, res);
 	});
 }
+
+function recRecipe(ingreds, res) {
+	console.log(ingreds);
+	var url = "";
+	if (ingreds.length > 0) {
+		url += ingreds[0].name.trim();
+		for (var i = 1; i < Math.min(3, ingreds.length); i++) {
+			url += "," + ingreds[i].name.trim();
+		}
+	}
+	console.log(encodeURIComponent(url)); 
+	unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?ingredients=" + url + "&limitLicense=false&number=5&ranking=1")
+	.header("X-Mashape-Key", "68sljwduiumshFCNWmjQRwB9a1T1p1sYYvNjsni2hRqvH6NZUe")
+	.header("Accept", "application/json")
+	.end(function (result) {
+	  res.json(result.body);
+	});
+	/*var host = "https://api.edamam.com/"
+	var url = "search?q="
+	if (ingreds.length > 0) {
+		url += ingreds[0].name.trim();
+		for (var i = 1; i < Math.min(3, ingres.length); i++) {
+			url += "," + ingreds[i].name.trim();
+		}
+		url += "&app_id=" + eapp_id;
+		url += "&app_key=" + eapp_key; 
+		console.log(url);
+		http.request( {"host" : host, "path": url}, callBack).end();
+	}*/
+}
+
+function callBack(response) {
+	console.log(response);
+}
+
+
 
 // START THE SERVER
 // =============================================================================

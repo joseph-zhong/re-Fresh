@@ -24,6 +24,7 @@
     "mongoose": "*",
     "morgan": "*",
     "node-parse-api": "*",
-    "postmates": "^1.0.2"
+    "postmates": "^1.0.2",
+    "unirest" : "*"
   }
 }
