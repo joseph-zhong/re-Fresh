@@ -80,40 +80,25 @@ var router = express.Router();
 router.use(function(req, res, next) {
 	// do logging
 	res.header("Access-Control-Allow-Origin", "*");
-	//res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	console.log('API Being Accessed');
 	next();
 });
 
-//var path    = require("path");
+var path    = require("path");
 
-//app.use(express.static(path.join(__dirname, './')));
-//
-//app.use("/styles",  express.static(__dirname + '/styles'));
-//app.use("/js", express.static(__dirname + '/js'));
-//app.use("/images",  express.static(__dirname + '/images'));
-//
-//app.get('/',function(req,res){
-//	res.sendfile(path.join(__dirname + '/index.html'));
-//});
+app.use(express.static(path.join(__dirname, './')));
 
+app.use("/styles",  express.static(__dirname + '/styles'));
+app.use("/js", express.static(__dirname + '/js'));
+app.use("/images",  express.static(__dirname + '/images'));
 
-/*router.route('/')
-	.get(function(req, res) {
-		console.log("route");
-		//res.sendFile(path.join(__dirname, 'index.html'));
-		//res.sendFile(path.join(__dirname, 'index.html'));
-		//res.sendFile('index.html', { root: __dirname });
-		//res.sendfile(res.sendfile('/index.html', {root: __dirname }));
+app.get('/',function(req,res){
+	res.sendfile(path.join(__dirname + '/index.html'));
+});
 
-		res.sendFile(path.join(__dirname + '/index.html'));
-});*/
-//
-//router.get('/site/index.html', function(req, res){
-//	res.sendFile(path.join(__dirname, '/site', 'index.html'));
-//	//res.sendfile(res.sendfile('/site/index.html', {root: __dirname }));
-//});
+router.use('/api/');
 
 // needs an abreviation to look up (:abrv)
 router.route('/abrv/:abrv')
