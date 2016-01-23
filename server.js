@@ -57,9 +57,9 @@ var path = require('path');
 app.get('/', function(req, res) {
 	//res.sendfile(path.join(__dirname + '/index.html'));
 	console.log("hello omg fuck");
-	var s = __dirname + '/index.html';
-	console.log(__dirname + '/index.html');
-	res.sendFile(path.join(__dirname + '/index.html'), options, function (err) {
+	var s = '/index.html';
+	console.log('/index.html');
+	res.sendFile(path.join('/index.html'), options, function (err) {
 		if (err) {
 			console.log(err);
 			res.status(err.status).end();
