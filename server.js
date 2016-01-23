@@ -40,7 +40,7 @@ var cats = {
 	"broccoli" : "vegetables",
 	"bread" : "baked goods",
 	"eggs" : "poultry"
-}
+};
 
 var descriptions = {
 	"beef" : "8 oz",
@@ -54,7 +54,7 @@ var descriptions = {
 	"broccoli" : "4 stocks",
 	"bread" : "1 loaf",
 	"eggs" : "2 dozen"
-}
+};
 
 var abrv = {'bf' : 'beef',
   'mlk' : 'milk',
@@ -123,7 +123,6 @@ router.route('/abrv/:abrv')
 		} else {
 			res.json(result + " and the expiration date is in " + groceries[result][0] + " day(s)");
 		}
-
 	});
 
 // needs a data field in the body with the list from the OCR algorithm 
