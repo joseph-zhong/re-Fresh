@@ -74,15 +74,15 @@ router.route('/add/multiple')
 		var data = req.body.data;
 		var prods = determineProducts(data);
 		for (var prod in prods) {
-			var expirationd = getNDaysFromNow(groceries[prod][0]);
+			/*var expirationd = getNDaysFromNow(groceries[prod][0]);
 			var lifetime = groceries[prod][0];
 			var jsonObj = {
 				"name" : name,
-				"expiration-date" : expirationd,
+				"expDate" : expirationd,
 				"lifetime" : lifetime
-			}
+			}*/
 
-			addItemToParse(jsonObj);
+			addItemToParse(prod);
 		}
 
 		res.json("done");
@@ -100,7 +100,7 @@ router.route('add/single')
 			var descrp = req.body.description;
 			var jsonObj = {
 				"name" : name,
-				"expiration-date" : expirationd,
+				"expDate" : expirationd,
 				"lifetime" : lifetime,
 				"description" : descrp
 			}
