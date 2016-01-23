@@ -3,13 +3,25 @@ var express    = require('express');
 var bodyParser = require('body-parser');
 var app        = express();
 
+var groceries = {
+	"beef" : [1,2],
+	"milk" : [5, 7],
+	"chicken" : [1,2],
+	"bacon" : [7, 14],
+	"salmon" : [1, 2],
+	"apples" : [10, 14],
+	"oranges" : [14, 21],
+	"potatoes" : [21, 35],
+	"broccoli" : [7, 14],
+	"bread" : [5, 7]
+}
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var port     = process.env.PORT || 8080; // set our port
 
-//var cbBikeEntry = require('./app/models/cbBikeEntry');
 var router = express.Router();
 
 // middleware to use for all requests
@@ -27,8 +39,8 @@ router.get('/', function(req, res){
 
 router.route('/route/abrv')
 	.get(function(req, res){
-		
-	})
+		match(req.params.abrv);
+	});
 
 
 app.use('/api', router);
