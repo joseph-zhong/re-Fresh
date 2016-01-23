@@ -35,3 +35,4 @@ function capitalize(string) {
 }
 
 // js functiont that takes parse parameters and returns 2h etc.
+

@@ -1,6 +1,9 @@
 // All required utils for the app 
 var express    = require('express');
 var bodyParser = require('body-parser');
+var Postmates = require('postmates');
+var postmates = new Postmates('cus_KeAkAy7GIWj1lF', 'b77414cb-ffdd-4e05-b10b-165f2e6464d5');
+var p = require('./postmates.js');
 var app        = express();
 var Parse = require('node-parse-api').Parse;
 
@@ -117,17 +120,8 @@ router.route('/add/multiple')
 		var data = req.body.data;
 		var prods = determineProducts(data);
 		for (var prod in prods) {
-			/*var expirationd = getNDaysFromNow(groceries[prod][0]);
-			var lifetime = groceries[prod][0];
-			var jsonObj = {
-				"name" : name,
-				"expDate" : expirationd,
-				"lifetime" : lifetime
-			}*/
-
 			addItemToParse(prod);
 		}
-
 		res.json("done");
 	});
 
@@ -148,14 +142,19 @@ router.route('/add/single')
 				"lifetime" : lifetime,
 				"description" : descrp,
 				"category": category
-			}
-
+			};
 			parse.insert('items', josnObj, function (err, response) {
 			  console.log(response);
 			});
 		}
 
 		res.json("done");
+	});
+
+router.route('postmates')
+	.post(function(req, res) {
+		p.createDelivery(req.body.product, req.body.descript, req.body.stores,
+				req.body.name, req.body.homeAddress, res);
 	});
 
 function match(text){
@@ -178,23 +177,7 @@ function match(text){
 
 		return resultingClosestWord[0];
 	}
-	
-	/*for(var grocery in groceries){
-		var pointer=0;
-		for(i=0;i<grocery.length;i++){
-			if(text.charAt(pointer)==grocery.charAt(i)){
-				pointer+=1
-			}
-		}
-		if(pointer==len&&grocery.length-len<minLength){
-			minLength=grocery.length-len;
-			result=grocery;
-		}
-	} */
-
-//	return result;
 }
-
 
 function determineProducts(list) {
 	var dict  = {};
@@ -208,8 +191,6 @@ function determineProducts(list) {
 			} else {
 				dict[res] = 1;
 			}
-		} else {
-			//console.log(item + " has no match.");
 		}
 	}
 
@@ -230,22 +211,6 @@ function getClosestWord(w, dict) {
 
 	return [minWord, minDis];
 }
-
-/*function getClosestAbrev(w) {
-	var minDis = -1;
-	var minWord = "";
-	for (var grocery in abrv) {
-		grocery = abrv[grocery];
-		var dis = getEditDistance(w, grocery);
-		//console.log(grocery + " the dist is " + dis);
-		if (minDis == -1 || minDis > dis) {
-			minDis = dis;
-			minWord = grocery;
-		}
-	}
-
-	return [minWord, minDis];
-} */
 
 function levenshteinDistance (s, t) {
     if (!s.length) return t.length;
@@ -315,7 +280,7 @@ function addItemToParse(food) {
 		"lifetime" : groceries[food],
 		"description" : descriptions[food],
 		"category" : cats[food]
-	}
+	};
 
 	parse.insert('foodEntry', item, function (err, response) {
 	  console.log(response);
@@ -331,8 +296,7 @@ function getNDaysFromNow(n) {
 function getReciepe() {
 	parse.find('foodEntry', null, function (err, response) {
 
-	}); 
-
+	});
 }
 
 // START THE SERVER
