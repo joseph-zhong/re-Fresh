@@ -89,8 +89,8 @@ var path    = require("path");
 
 //app.use(express.static(path.join(__dirname, 'public')));
 
-app.use("/styles",  express.static(__dirname + '/public/stylesheets'));
-app.use("/scripts", express.static(__dirname + '/public/javascripts'));
+app.use("/styles",  express.static(__dirname + '/public/style'));
+app.use("/js", express.static(__dirname + '/public/js'));
 app.use("/images",  express.static(__dirname + '/public/images'));
 
 app.get('/',function(req,res){
