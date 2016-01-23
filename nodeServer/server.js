@@ -46,6 +46,24 @@ router.route('/route/abrv')
 app.use('/api', router);
 
 
+function match(text){
+	var len=text.length;
+	var minLength=100;
+	var result="";
+	for(var grocery : groceries){
+		var pointer=0;
+		for(i=0;i<grocery.length;i++){
+			if(text.charAt(pointer)==grocery.charAt(i)){
+				pointer+=1
+			}
+		}
+		if(pointer==len&&grocery.length-len<minLength){
+			minLength=grocery.length-len;
+			result=grocery;
+		}
+	}
+	return result;
+}
 
 // START THE SERVER
 // =============================================================================
