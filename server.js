@@ -80,23 +80,23 @@ var router = express.Router();
 router.use(function(req, res, next) {
 	// do logging
 	res.header("Access-Control-Allow-Origin", "*");
-	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+	//res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	console.log('API Being Accessed');
 	next();
 });
 
-var path    = require("path");
+//var path    = require("path");
 
-app.use(express.static(path.join(__dirname, './')));
-
-app.use("/styles",  express.static(__dirname + '/styles'));
-app.use("/js", express.static(__dirname + '/js'));
-app.use("/images",  express.static(__dirname + '/images'));
-
-app.get('/',function(req,res){
-	res.sendfile(path.join(__dirname + '/index.html'));
-});
+//app.use(express.static(path.join(__dirname, './')));
+//
+//app.use("/styles",  express.static(__dirname + '/styles'));
+//app.use("/js", express.static(__dirname + '/js'));
+//app.use("/images",  express.static(__dirname + '/images'));
+//
+//app.get('/',function(req,res){
+//	res.sendfile(path.join(__dirname + '/index.html'));
+//});
 
 
 /*router.route('/')
