@@ -3,6 +3,7 @@ var express    = require('express');
 var bodyParser = require('body-parser');
 var app        = express();
 var Parse = require('node-parse-api').Parse;
+var unirest = require('unirest');
 
 var options = {
 	app_id : "2TEGFm48tpsJ7Ki02AbOsXKTbQZKzhc4RFhR7S7p",
@@ -340,7 +341,7 @@ function addItemToParse(food) {
 	var item = {
 		"name" : food,
 		"expDate" : getNDaysFromNow(groceries[food][0]),
-		"lifetime" : groceries[food],
+		"lifetime" : groceries[food][0],
 		"description" : descriptions[food],
 		"category" : cats[food]
 	}
@@ -356,14 +357,11 @@ function getNDaysFromNow(n) {
 	return a;
 }
 
-function getReciepe() {
+function getRecipe() {
 	parse.find('foodEntry', '', function (err, response) {
-		console.log(typeof(response));
-		for (var a in response) {
-			console.log("A key is: " + a);
-		}
-		var arr = response.results;
-		ar.sort(function(x, y){ 
+		var success = response;
+		var arr = success["results"];
+		arr.sort(function(x, y){ 
 		    if (x.expDate < y.expDate) {
 		        return -1;
 		    }
@@ -372,12 +370,40 @@ function getReciepe() {
 		    }
 		    return 0;
 		});
-		console.log(result);
+
+		recRecipe(arr);
 	}); 
 
 }
 
-//getReciepe();
+function recRecipe(ingreds) {
+	unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?ingredients=apples%2Cflour%2Csugar&limitLicense=false&number=5&ranking=1")
+	.header("X-Mashape-Key", "68sljwduiumshFCNWmjQRwB9a1T1p1sYYvNjsni2hRqvH6NZUe")
+	.header("Accept", "application/json")
+	.end(function (result) {
+	  console.log(result.status, result.headers, result.body);
+	});
+	/*var host = "https://api.edamam.com/"
+	var url = "search?q="
+	if (ingreds.length > 0) {
+		url += ingreds[0].name.trim();
+		for (var i = 1; i < Math.min(3, ingres.length); i++) {
+			url += "," + ingreds[i].name.trim();
+		}
+		url += "&app_id=" + eapp_id;
+		url += "&app_key=" + eapp_key; 
+		console.log(url);
+		http.request( {"host" : host, "path": url}, callBack).end();
+	}*/
+}
+
+function callBack(response) {
+	console.log(response);
+}
+
+
+
+getRecipe();
 
 // START THE SERVER
 // =============================================================================
