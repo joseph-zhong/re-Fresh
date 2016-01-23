@@ -5,8 +5,8 @@ var app        = express();
 var Parse = require('node-parse-api').Parse;
 
 var options = {
-	app_id : "",
-	api_key : "",
+	app_id : "2TEGFm48tpsJ7Ki02AbOsXKTbQZKzhc4RFhR7S7p",
+	api_key : "tFMOzm7J01GxnoPbGrHDAXGCsrGoeGrZR0Sao7Ny",
 };
 
 var parse = new Parse(options);
