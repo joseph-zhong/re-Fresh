@@ -9,6 +9,9 @@ var options = {
 	api_key : "tFMOzm7J01GxnoPbGrHDAXGCsrGoeGrZR0Sao7Ny"
 };
 
+var eapp_id = "a750fdb2";
+var eapp_key = "143b365c3f4cf72c75d73802ce735614";
+
 var parse = new Parse(options);
 
 var groceries = {
@@ -21,8 +24,37 @@ var groceries = {
 	"oranges" : [14, 21],
 	"potatoes" : [21, 35],
 	"broccoli" : [7, 14],
-	"bread" : [5, 7]
+	"bread" : [5, 7],
+	"eggs" : [30,30]
 };
+
+var cats = {
+	"beef" : "meat",
+	"milk" : "dairy",
+	"chicken" : "poultry",
+	"bacon" : "meat",
+	"salmon" : "fish",
+	"apples" : "fruits",
+	"oranges" : "fruits",
+	"potatoes" : "vegetables",
+	"broccoli" : "vegetables",
+	"bread" : "baked goods",
+	"eggs" : "poultry"
+}
+
+var descriptions = {
+	"beef" : "8 oz",
+	"milk" : "2 gallons",
+	"chicken" : "16 oz",
+	"bacon" : "32 oz",
+	"salmon" : "9 oz",
+	"apples" : "10",
+	"oranges" : "10",
+	"potatoes" : "1 sack",
+	"broccoli" : "4 stocks",
+	"bread" : "1 loaf",
+	"eggs" : "2 dozen"
+}
 
 var abrv = {'bf' : 'beef',
   'mlk' : 'milk',
@@ -33,7 +65,8 @@ var abrv = {'bf' : 'beef',
   'rngs' : 'oranges',
   'ptts' : 'potatoes',
   'brccl' : 'broccoli',
-  'brd' : 'bread'
+  'brd' : 'bread',
+  "ggs" : "eggs"
 };
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -118,12 +151,14 @@ router.route('/add/single')
 			var expirationd = getNDaysFromNow(groceries[name][0]);
 			var lifetime = groceries[name][0];
 			var descrp = req.body.description;
+			var category = req.body.category;
 			var jsonObj = {
 				"name" : name,
 				"expDate" : expirationd,
 				"lifetime" : lifetime,
-				"description" : descrp
-			};
+				"description" : descrp,
+				"category": category
+			}
 
 			parse.insert('items', josnObj, function (err, response) {
 			  console.log(response);
@@ -288,8 +323,8 @@ function addItemToParse(food) {
 		"name" : food,
 		"expDate" : getNDaysFromNow(groceries[food][0]),
 		"lifetime" : groceries[food],
-		"description" : "",
-		"category" : ""
+		"description" : descriptions[food],
+		"category" : cats[food]
 	}
 
 	parse.insert('foodEntry', item, function (err, response) {
@@ -303,31 +338,12 @@ function getNDaysFromNow(n) {
 	return a;
 }
 
-/*var test = ["‘I‘INEIIIINIIHIIIIIL", "1", "\h", "1", "Save", "money.", "Live", "better.", 
-			"I", "085R)S$EOIR", "30588", "Ran", "13059", "FHIR", "LHKES", "PnRKuRY", "FHIRFRX", 
-			"vn", "22033", "a", "518", "2016", "0=a", "00004960", "16:", "11", "1R1", "0190", "8/8", "BRST", 
-			"L3", "020646690943", "F", "43", "1", "8/5", "BRST", "L3", "020546611017", "F", "T", "g", "SUBTOTAL", 
-			"60", "7", "6/5", "BRST", "L3", "020546640937", "F", "37", "i", "a/s", "BRST", "L3", "020646600949", 
-			"F", "49", "6", "n/s", "BRST", "L3", "020646681031", "F", "1", "3", ";", "a/s", "BRST", "Ls", 
-			"020546681075", "F", "1", ".7", ".", "SUBTOTRL", "6", "6", ";", "nc", "CELERY", "SE", "006210000218",
-			 "F", ".", "no", "CELERY", "SE", "006210000218", "F", "HCC/SCH", "PICK", "006210000602", "F", 
-			 "HCC/SCH", "PICK", "006210000602", "F", "CHICKN", "BROTH", "006100013279"];*/
+function getReciepe() {
+	parse.find('foodEntry', null, function (err, response) {
 
-var test = ["W§", "BRUCERV", "§", "2!;", "Mixed", "Nuts", "19,99", "1550", "x", "125,00/kg", "yitKat", "A-Fingev", "45g“", "7,00", "Trnp.", "Apple", "Juice", "7501", "11,00", "0119‘", "Cam", "Flakes", "7500", "8%", "25,50", "m1.\§v|15n", "§m", "chicken", "%", "42,00", "262g", "W", "Banana", "Chiqulta", "9,20", "452g", "x", "18,50/kg", "urange", "7,35", "2850", "x", "21,00/kg", "Mushroum", "6,85", "170g", "x", "as", "nu/kg"];
-/*console.log(determineProducts(test));*/
+	}); 
 
-var prods = determineProducts(test);
-		for (var prod in prods) {
-			/*var expirationd = getNDaysFromNow(groceries[prod][0]);
-			var lifetime = groceries[prod][0];
-			var jsonObj = {
-				"name" : name,
-				"expDate" : expirationd,
-				"lifetime" : lifetime
-			}*/
-
-			addItemToParse(prod);
-		}
+}
 
 // START THE SERVER
 // =============================================================================
