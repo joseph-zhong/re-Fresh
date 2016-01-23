@@ -87,9 +87,9 @@ router.use(function(req, res, next) {
 
 var path    = require("path");
 
-//app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, './')));
 
-app.use("/styles",  express.static(__dirname + '/style'));
+app.use("/styles",  express.static(__dirname + '/styles'));
 app.use("/js", express.static(__dirname + '/js'));
 app.use("/images",  express.static(__dirname + '/images'));
 
