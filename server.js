@@ -54,7 +54,7 @@ router.use(function(req, res, next) {
 
 //var path = require('path');
 
-app.get('/', function(req, res) {
+app.get('/api/', function(req, res) {
 	console.log("omg");
 	res.sendFile("index.html");
 });
@@ -122,7 +122,7 @@ router.route('/add/single')
 				"expDate" : expirationd,
 				"lifetime" : lifetime,
 				"description" : descrp
-			}
+			};
 
 			parse.insert('items', josnObj, function (err, response) {
 			  console.log(response);
@@ -133,7 +133,7 @@ router.route('/add/single')
 	});
 
 // post needs fields for each col in parse (name, expiration date, lifetime)
-app.use('/api', router);
+app.use('/', router);
 
 
 function match(text){
