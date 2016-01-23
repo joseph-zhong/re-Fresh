@@ -1,30 +1,28 @@
 /**
  * Created by Joseph on 1/23/16.
+ *
+ * USAGE:
+ * 1) getLocation() to retrieve current coordinates
+ * 2) revGeocode() to convert current coordinates to address
+ * 3) getStoreCoordinates() to retrieve nearby stores' addresses
+ *
+ * googleSetup function handles all Google services setup
  */
-
+    
 var homeCoordinates;
 var homeAddress;
 var stores = [];
 var map;
 var service;
 
-/**
- * USAGE:
- * 1) getLocation() to retrieve current coordinates
- * 2) revGeocode() to convert current coordinates to address
- * 2) getStoreCoordinates() to retrieve nearby stores' addresses
- */
-
-function getStoreCoordinates() {
-    //homeCoordinates = getLocation();
-    //console.log(homeCoordinates);
+function getStoreCoordinates(product, descript) {
     if(!homeCoordinates) {
         console.error("WARNING: home coordinates not set -- must call getLocation first!");
         return;
     }
     var currLoc = new google.maps.LatLng(homeCoordinates.lat, homeCoordinates.lng);
-    //console.log(currLoc);
-    // may be unnecessary
+
+    // map may be unnecessary
     map = new google.maps.Map(document.getElementById('map'), {
         center: currLoc,
         zoom: 15
@@ -38,15 +36,16 @@ function getStoreCoordinates() {
     };
 
     service = new google.maps.places.PlacesService(document.getElementById('map'));
-    service.textSearch(request, callback);
+    service.textSearch(product, descript, request, callback);
 }
 
 // callback for textSearch
-function callback(results, status) {
+function callback(product, descript, results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
             stores.add(results[i]);
         }
+        createDelivery(product, descript);
     }
     else {
         console.error("Something went wrong in retrieving nearby stores: " + status);
@@ -54,7 +53,7 @@ function callback(results, status) {
 }
 
 // gets user's location
-function getLocation() {
+function getLocation(product, descript) {
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -64,6 +63,7 @@ function getLocation() {
             };
             console.log(loc);
             homeCoordinates = loc;
+            revGeocode(product, descript);
         }, function() {
             console.log('failed to get location...');
             // failed...
@@ -74,14 +74,15 @@ function getLocation() {
     }
 }
 
-function revGeocode() {
+function revGeocode(product, descript) {
     if(homeCoordinates) {
-        var geocoder = new google.maps.Geocoder;
+        var geocoder = new google.maps.Geocoder();
         geocoder.geocode({'location': homeCoordinates}, function(results, status) {
             if (status === google.maps.GeocoderStatus.OK) {
                 if (results[1]) {
                     console.log("successfully reversed geocode");
                     homeAddress = results[1].formatted_address;
+                    getStoreCoordinates(product, descript);
                 } else {
                     console.error('No results found');
                 }
@@ -91,3 +92,18 @@ function revGeocode() {
         });
     }
 }
+
+//var googleMapsCallback = function() {
+//    var geocoder = new google.maps.Geocoder(), // Works when google makes the call.
+//        activityMap = new google.maps.Map($("#map")[0], {
+//            center: new google.maps.LatLng(0, 0),
+//            zoom: 0,
+//            mapTypeId: google.maps.MapTypeId.SATELLITE
+//        });
+//
+//    doSomethingMapRelatedInvolvingJQuery(geocoder, map);
+//};
+//$.ajax({
+//    url: "https://maps.googleapis.com/maps/api/js?v=3&callback=googleMapsCallback&sensor=false",
+//    dataType: "script"
+//});

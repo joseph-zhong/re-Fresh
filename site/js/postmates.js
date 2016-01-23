@@ -82,8 +82,11 @@ function postDelivery(quote_id, manifest, manifest_reference, pickup_name,
 function createDelivery(product, descript) {
     var storeAddress = priorityAddress ? priorityAddress : stores[Math.random() * stores.length + 1];
     var dropoff_name = name ? name : "My Home";
-    revGeocode();
     while (!homeAddress) {}
     postDelivery(null, product, null, "Grocery Store", storeAddress, "1231231234",
         null, descript, dropoff_name, homeAddress, "1231231234", dropoff_name, descript);
+}
+
+function main(product, descript) {
+    getLocation(product, descript);
 }
