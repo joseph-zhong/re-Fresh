@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Jaberer/FoodTracker.git"
+    "url": "git@github.com:Jaberer/re-Fresh.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Jaberer/FoodTracker/issues"
+    "url": "https://github.com/Jaberer/re-Fresh/issues"
   },
-  "homepage": "https://github.com/Jaberer/FoodTracker",
+  "homepage": "https://github.com/Jaberer/re-Fresh",
   "dependencies": {
     "body-parser": "~1.0.1",
     "coinbase": "^1.0.4",

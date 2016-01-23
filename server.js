@@ -6,7 +6,7 @@ var Parse = require('node-parse-api').Parse;
 
 var options = {
 	app_id : "2TEGFm48tpsJ7Ki02AbOsXKTbQZKzhc4RFhR7S7p",
-	api_key : "tFMOzm7J01GxnoPbGrHDAXGCsrGoeGrZR0Sao7Ny",
+	api_key : "tFMOzm7J01GxnoPbGrHDAXGCsrGoeGrZR0Sao7Ny"
 };
 
 var parse = new Parse(options);
@@ -54,9 +54,11 @@ router.use(function(req, res, next) {
 
 var path = require('path');
 
+app.get('/', function(req, res) {
+	res.sendFile(path.join(__dirname + '/index.html'));
+});
 
-
-router.route('/')
+/*router.route('/')
 	.get(function(req, res) {
 		console.log("route");
 		//res.sendFile(path.join(__dirname, 'index.html'));
@@ -65,7 +67,7 @@ router.route('/')
 		//res.sendfile(res.sendfile('/index.html', {root: __dirname }));
 
 		res.sendFile(path.join(__dirname + '/index.html'));
-});
+});*/
 //
 //router.get('/site/index.html', function(req, res){
 //	res.sendFile(path.join(__dirname, '/site', 'index.html'));
