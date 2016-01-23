@@ -55,9 +55,10 @@ router.use(function(req, res, next) {
 router.route('/')
 	.get(function(req, res) {
 		console.log("route");
-		res.sendFile(path.join(__dirname, 'index.html'));
-		//res.sendFile('index1.html', { root: path.join(__dirname, 'site') });
-		//res.sendfile(res.sendfile('/site/index.html', {root: __dirname }));
+		//res.sendFile(path.join(__dirname, 'index.html'));
+		//res.sendFile(path.join(__dirname, 'index.html'));
+		res.sendFile('index.html', { root: __dirname });
+		//res.sendfile(res.sendfile('/index.html', {root: __dirname }));
 });
 //
 //router.get('/site/index.html', function(req, res){
