@@ -52,12 +52,13 @@ router.use(function(req, res, next) {
 	next();
 });
 
-//var path = require('path');
+var path    = require("path");
 
-app.get('/', function(req, res) {
-	console.log("omg");
-	res.sendFile("index.html");
+app.get('/',function(req,res){
+	res.sendFile(path.join(__dirname + '/index.html'));
+	//__dirname : It will resolve to your project folder.
 });
+
 
 /*router.route('/')
 	.get(function(req, res) {
