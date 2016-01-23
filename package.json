@@ -17,13 +17,12 @@
   },
   "homepage": "https://github.com/Jaberer/re-Fresh",
   "dependencies": {
-    "body-parser": "~1.0.1",
-    "coinbase": "^1.0.4",
-    "express": "~4.0.0",
-    "mongodb": "^2.0.46",
-    "mongodb-uri": "^0.9.7",
-    "mongoose": "~3.6.13",
-    "morgan": "~1.0.0",
-    "node-parse-api" : "0.3.8"
+    "body-parser": "*",
+    "express": "*",
+    "mongodb": "*",
+    "mongodb-uri": "*",
+    "mongoose": "*",
+    "morgan": "*",
+    "node-parse-api" : "*"
   }
 }
