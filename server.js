@@ -173,6 +173,11 @@ router.route('/add/single')
 		res.json("done");
 	});
 
+	router.route('/recommend/recipe')
+		.get(function(req, res) {
+			getRecipe(res);
+		});
+
 function match(text){
 	var len=text.length;
 	var minLength=100;
@@ -343,8 +348,9 @@ function getNDaysFromNow(n) {
 	return a;
 }
 
-function getRecipe() {
+function getRecipe(res) {
 	parse.find('foodEntry', '', function (err, response) {
+		//console.log(response);
 		var success = response;
 		var arr = success["results"];
 		arr.sort(function(x, y){ 
@@ -357,25 +363,26 @@ function getRecipe() {
 		    return 0;
 		});
 
-		recRecipe(arr);
+		recRecipe(arr, res);
 	}); 
 
 }
 
-function recRecipe(ingreds) {
+function recRecipe(ingreds, res) {
+	console.log(ingreds);
 	var url = "";
 	if (ingreds.length > 0) {
 		url += ingreds[0].name.trim();
-		for (var i = 1; i < Math.min(3, ingres.length); i++) {
+		for (var i = 1; i < Math.min(3, ingreds.length); i++) {
 			url += "," + ingreds[i].name.trim();
 		}
 	}
-	console.log(encodeURIComponent(url));
-	unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?ingredients=apples%2Cflour%2Csugar&limitLicense=false&number=5&ranking=1")
+	console.log(encodeURIComponent(url)); 
+	unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?ingredients=" + url + "&limitLicense=false&number=5&ranking=1")
 	.header("X-Mashape-Key", "68sljwduiumshFCNWmjQRwB9a1T1p1sYYvNjsni2hRqvH6NZUe")
 	.header("Accept", "application/json")
 	.end(function (result) {
-	  console.log(result.status, result.headers, result.body);
+	  res.json(result.body);
 	});
 	/*var host = "https://api.edamam.com/"
 	var url = "search?q="
@@ -396,8 +403,6 @@ function callBack(response) {
 }
 
 
-
-//getRecipe();
 
 // START THE SERVER
 // =============================================================================
