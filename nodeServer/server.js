@@ -25,7 +25,8 @@ var abrv = {'bf' : 'beef',
   'rngs' : 'oranges',
   'ptts' : 'potatoes',
   'brccl' : 'broccoli',
-  'brd' : 'bread'};
+  'brd' : 'bread'
+};
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -76,13 +77,12 @@ function match(text){
 		resultingClosestWord = [abrv[a[0]], a[1]];
 	}
 
-	if (resultingClosestWord[1] >= text.length - 1) {
+	if (resultingClosestWord[1] > Math.min(text.length - 1, resultingClosestWord[0].length - 1)) {
 		return null;
+	} else {
+
+		return resultingClosestWord[0];
 	}
-
-	console.log(resultingClosestWord);
-
-	return resultingClosestWord[0];
 	
 	/*for(var grocery in groceries){
 		var pointer=0;
@@ -100,9 +100,30 @@ function match(text){
 //	return result;
 }
 
+
+function determineProducts(list) {
+	var dict  = {};
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var res = match(item);
+		if (res != null) {
+			console.log(item + "is also known as: " + res);
+			if (res in dict) {
+				dict[res]++;
+			} else {
+				dict[res] = 1;
+			}
+		} else {
+			console.log(item + " has no match.");
+		}
+	}
+
+	return dict;
+}
+
 function getClosestWord(w, dict) {
 	var minDis = -1;
-	var minWord = "";
+	var minWord = "";                                                
 	for (var grocery in dict) {
 		var dis = getEditDistance(w, grocery);
 		//console.log(grocery + " the dist is " + dis);
@@ -192,6 +213,16 @@ function removeAllVowels() {
 	console.log(arr);
 }
 
+var test = ["‘I‘INEIIIINIIHIIIIIL", "1", "\h", "1", "Save", "money.", "Live", "better.", 
+			"I", "085R)S$EOIR", "30588", "Ran", "13059", "FHIR", "LHKES", "PnRKuRY", "FHIRFRX", 
+			"vn", "22033", "a", "518", "2016", "0=a", "00004960", "16:", "11", "1R1", "0190", "8/8", "BRST", 
+			"L3", "020646690943", "F", "43", "1", "8/5", "BRST", "L3", "020546611017", "F", "T", "g", "SUBTOTAL", 
+			"60", "7", "6/5", "BRST", "L3", "020546640937", "F", "37", "i", "a/s", "BRST", "L3", "020646600949", 
+			"F", "49", "6", "n/s", "BRST", "L3", "020646681031", "F", "1", "3", ";", "a/s", "BRST", "Ls", 
+			"020546681075", "F", "1", ".7", ".", "SUBTOTRL", "6", "6", ";", "nc", "CELERY", "SE", "006210000218",
+			 "F", ".", "no", "CELERY", "SE", "006210000218", "F", "HCC/SCH", "PICK", "006210000602", "F", 
+			 "HCC/SCH", "PICK", "006210000602", "F", "CHICKN", "BROTH", "006100013279"];
+console.log(determineProducts(test));
 
 // START THE SERVER
 // =============================================================================
