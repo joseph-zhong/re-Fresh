@@ -76,24 +76,14 @@ var port     = process.env.PORT || 8080; // set our port
 
 var router = express.Router();
 
-//// middleware to use for all requests
-//router.use(function(req, res, next) {
-//	// do logging
-//	res.header("Access-Control-Allow-Origin", "*");
-//  	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//	console.log('API Being Accessed');
-//	next();
-//});
-
-var allowCrossDomain = function(req, res, next) {
-	res.header('Access-Control-Allow-Origin', "*");
+// middleware to use for all requests
+router.use(function(req, res, next) {
+	// do logging
+	res.header("Access-Control-Allow-Origin", "*");
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-	res.header('Access-Control-Allow-Headers', 'Content-Type');
+  	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	console.log('API Being Accessed');
 	next();
-};
-
-app.configure(function() {
-	app.use(allowCrossDomain);
 });
 
 var path    = require("path");
