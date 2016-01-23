@@ -16,11 +16,11 @@ var eapp_key = "143b365c3f4cf72c75d73802ce735614";
 var parse = new Parse(options);
 
 var groceries = {
-	"beef" : [1,2],
+	"beef" : [2,3],
 	"milk" : [5, 7],
-	"chicken" : [1,2],
+	"chicken" : [2,3],
 	"bacon" : [7, 14],
-	"salmon" : [1, 2],
+	"salmon" : [2, 3],
 	"apples" : [10, 14],
 	"oranges" : [14, 21],
 	"potatoes" : [21, 35],
