@@ -78,4 +78,3 @@ function createDelivery(quote_id, manifest, manifest_reference, pickup_name,
         }
     });
 }
-
