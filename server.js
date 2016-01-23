@@ -1,6 +1,9 @@
 // All required utils for the app 
 var express    = require('express');
 var bodyParser = require('body-parser');
+var Postmates = require('postmates');
+var postmates = new Postmates('cus_KeAkAy7GIWj1lF', 'b77414cb-ffdd-4e05-b10b-165f2e6464d5');
+var p = require('./postmates.js');
 var app        = express();
 var Parse = require('node-parse-api').Parse;
 var unirest = require('unirest');
@@ -16,11 +19,11 @@ var eapp_key = "143b365c3f4cf72c75d73802ce735614";
 var parse = new Parse(options);
 
 var groceries = {
-	"beef" : [1,2],
+	"beef" : [2,3],
 	"milk" : [5, 7],
-	"chicken" : [1,2],
+	"chicken" : [2,3],
 	"bacon" : [7, 14],
-	"salmon" : [1, 2],
+	"salmon" : [2, 3],
 	"apples" : [10, 14],
 	"oranges" : [14, 21],
 	"potatoes" : [21, 35],
@@ -39,18 +42,18 @@ var cats = {
 	"oranges" : "fruits",
 	"potatoes" : "vegetables",
 	"broccoli" : "vegetables",
-	"bread" : "baked goods",
-	"eggs" : "poultry"
+	"bread" : "bakedGoods",
+	"eggs" : "eggs"
 };
 
 var descriptions = {
 	"beef" : "8 oz",
 	"milk" : "2 gallons",
 	"chicken" : "16 oz",
-	"bacon" : "32 oz",
+	"bacon" : "16 oz",
 	"salmon" : "9 oz",
-	"apples" : "10",
-	"oranges" : "10",
+	"apples" : "10 ct",
+	"oranges" : "10 ct",
 	"potatoes" : "1 sack",
 	"broccoli" : "4 stocks",
 	"bread" : "1 loaf",
@@ -132,17 +135,8 @@ router.route('/add/multiple')
 		var data = req.body.data;
 		var prods = determineProducts(data);
 		for (var prod in prods) {
-			/*var expirationd = getNDaysFromNow(groceries[prod][0]);
-			var lifetime = groceries[prod][0];
-			var jsonObj = {
-				"name" : name,
-				"expDate" : expirationd,
-				"lifetime" : lifetime
-			}*/
-
 			addItemToParse(prod);
 		}
-
 		res.json("done");
 	});
 
@@ -163,14 +157,24 @@ router.route('/add/single')
 				"lifetime" : lifetime,
 				"description" : descrp,
 				"category": category
-			}
-
+			};
 			parse.insert('items', josnObj, function (err, response) {
 			  console.log(response);
 			});
 		}
 
 		res.json("done");
+	});
+
+router.route('postmates')
+	.post(function(req, res) {
+		p.createDelivery(req.body.product, req.body.descript, req.body.stores,
+				req.body.name, req.body.homeAddress, res);
+	});
+
+router.route('/recommend/recipe')
+	.get(function(req, res) {
+		getRecipe(res);
 	});
 
 function match(text){
@@ -193,23 +197,7 @@ function match(text){
 
 		return resultingClosestWord[0];
 	}
-	
-	/*for(var grocery in groceries){
-		var pointer=0;
-		for(i=0;i<grocery.length;i++){
-			if(text.charAt(pointer)==grocery.charAt(i)){
-				pointer+=1
-			}
-		}
-		if(pointer==len&&grocery.length-len<minLength){
-			minLength=grocery.length-len;
-			result=grocery;
-		}
-	} */
-
-//	return result;
 }
-
 
 function determineProducts(list) {
 	var dict  = {};
@@ -223,8 +211,6 @@ function determineProducts(list) {
 			} else {
 				dict[res] = 1;
 			}
-		} else {
-			//console.log(item + " has no match.");
 		}
 	}
 
@@ -245,22 +231,6 @@ function getClosestWord(w, dict) {
 
 	return [minWord, minDis];
 }
-
-/*function getClosestAbrev(w) {
-	var minDis = -1;
-	var minWord = "";
-	for (var grocery in abrv) {
-		grocery = abrv[grocery];
-		var dis = getEditDistance(w, grocery);
-		//console.log(grocery + " the dist is " + dis);
-		if (minDis == -1 || minDis > dis) {
-			minDis = dis;
-			minWord = grocery;
-		}
-	}
-
-	return [minWord, minDis];
-} */
 
 function levenshteinDistance (s, t) {
     if (!s.length) return t.length;
@@ -330,7 +300,7 @@ function addItemToParse(food) {
 		"lifetime" : groceries[food][0],
 		"description" : descriptions[food],
 		"category" : cats[food]
-	}
+	};
 
 	parse.insert('foodEntry', item, function (err, response) {
 	  console.log(response);
@@ -343,8 +313,9 @@ function getNDaysFromNow(n) {
 	return a;
 }
 
-function getRecipe() {
+function getRecipe(res) {
 	parse.find('foodEntry', '', function (err, response) {
+		//console.log(response);
 		var success = response;
 		var arr = success["results"];
 		arr.sort(function(x, y){ 
@@ -357,25 +328,25 @@ function getRecipe() {
 		    return 0;
 		});
 
-		recRecipe(arr);
-	}); 
-
+		recRecipe(arr, res);
+	});
 }
 
-function recRecipe(ingreds) {
+function recRecipe(ingreds, res) {
+	console.log(ingreds);
 	var url = "";
 	if (ingreds.length > 0) {
 		url += ingreds[0].name.trim();
-		for (var i = 1; i < Math.min(3, ingres.length); i++) {
+		for (var i = 1; i < Math.min(3, ingreds.length); i++) {
 			url += "," + ingreds[i].name.trim();
 		}
 	}
-	console.log(encodeURIComponent(url));
-	unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?ingredients=apples%2Cflour%2Csugar&limitLicense=false&number=5&ranking=1")
+	console.log(encodeURIComponent(url)); 
+	unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?ingredients=" + url + "&limitLicense=false&number=5&ranking=1")
 	.header("X-Mashape-Key", "68sljwduiumshFCNWmjQRwB9a1T1p1sYYvNjsni2hRqvH6NZUe")
 	.header("Accept", "application/json")
 	.end(function (result) {
-	  console.log(result.status, result.headers, result.body);
+	  res.json(result.body);
 	});
 	/*var host = "https://api.edamam.com/"
 	var url = "search?q="
@@ -396,8 +367,6 @@ function callBack(response) {
 }
 
 
-
-//getRecipe();
 
 // START THE SERVER
 // =============================================================================

@@ -6,7 +6,6 @@
  * 2) revGeocode() to convert current coordinates to address
  * 3) getStoreCoordinates() to retrieve nearby stores' addresses
  *
- * googleSetup function handles all Google services setup
  */
 
 var homeCoordinates;
@@ -15,18 +14,13 @@ var stores = [];
 var map;
 var service;
 
+
 function getStoreCoordinates(product, descript) {
     if(!homeCoordinates) {
         console.error("WARNING: home coordinates not set -- must call getLocation first!");
         return;
     }
     var currLoc = new google.maps.LatLng(homeCoordinates.lat, homeCoordinates.lng);
-
-    // map may be unnecessary
-    //map = new google.maps.Map(document.getElementById('map'), {
-    //    center: currLoc,
-    //    zoom: 15
-    //});
 
     var request = {
         location: currLoc,
@@ -44,7 +38,6 @@ function getStoreCoordinates(product, descript) {
             console.log(stores);
             console.log("product: " + product);
             console.log("descript: " + descript);
-            createDelivery(product, descript);
         }
         else {
             console.error("Something went wrong in retrieving nearby stores: " + status);
@@ -54,7 +47,6 @@ function getStoreCoordinates(product, descript) {
 
 // gets user's location
 function getLocation(product, descript) {
-    // Try HTML5 geolocation.
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
             var loc = {
@@ -66,10 +58,8 @@ function getLocation(product, descript) {
             revGeocode(product, descript);
         }, function() {
             console.log('failed to get location...');
-            // failed...
         });
     } else {
-        // Browser doesn't support Geolocation
         console.error("Browser doesn't support Geolocation");
     }
 }
@@ -91,4 +81,18 @@ function revGeocode(product, descript) {
             }
         });
     }
+}
+
+// product, descript, stores, name, homeAddress
+function sendPostMatesReq(product, descript, stores, name, homeAddress) {
+    $.ajax({
+        type: "POST",
+        url: "http://re-fresh1.herokuapp.com/api/postmates",
+        data: { "product": product, "descript": descript, "stores": stores,
+            "name": name, "homeAddress": homeAddress },
+        success: function(eta) {
+            console.log("Successfully created delivery: " + eta);
+
+        }
+    });
 }

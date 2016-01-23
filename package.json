@@ -23,7 +23,8 @@
     "mongodb-uri": "*",
     "mongoose": "*",
     "morgan": "*",
-    "node-parse-api" : "*",
+    "node-parse-api": "*",
+    "postmates": "^1.0.2",
     "unirest" : "*"
   }
 }
