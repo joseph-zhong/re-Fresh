@@ -88,7 +88,7 @@ router.route('/add/multiple')
 		res.json("done");
 	});
 
-router.route('add/single')
+router.route('/add/single')
 	.post(function(req, res) {
 		var name = match(req.body.name);
 		if (name == null) {
@@ -105,7 +105,9 @@ router.route('add/single')
 				"description" : descrp
 			}
 
-			addItemToParse(jsonObj);
+			parse.insert('items', josnObj, function (err, response) {
+			  console.log(response);
+			});
 		}
 
 		res.json("done");
@@ -268,12 +270,13 @@ function removeAllVowels() {
 function addItemToParse(food) {
 	var item = {
 		"name" : food,
-		"expiration-date" : getNDaysFromNow(groceries[food][0]),
+		"expDate" : getNDaysFromNow(groceries[food][0]),
 		"lifetime" : groceries[food],
-		"description" : ""
+		"description" : "",
+		"category" : ""
 	}
 
-	app.insert('FoodEntry', item, function (err, response) {
+	parse.insert('foodEntry', item, function (err, response) {
 	  console.log(response);
 	});
 }
@@ -294,8 +297,21 @@ function getNDaysFromNow(n) {
 			 "F", ".", "no", "CELERY", "SE", "006210000218", "F", "HCC/SCH", "PICK", "006210000602", "F", 
 			 "HCC/SCH", "PICK", "006210000602", "F", "CHICKN", "BROTH", "006100013279"];*/
 
-/*var test = ["W§", "BRUCERV", "§", "2!;", "Mixed", "Nuts", "19,99", "1550", "x", "125,00/kg", "yitKat", "A-Fingev", "45g“", "7,00", "Trnp.", "Apple", "Juice", "7501", "11,00", "0119‘", "Cam", "Flakes", "7500", "8%", "25,50", "m1.\§v|15n", "§m", "chicken", "%", "42,00", "262g", "W", "Banana", "Chiqulta", "9,20", "452g", "x", "18,50/kg", "urange", "7,35", "2850", "x", "21,00/kg", "Mushroum", "6,85", "170g", "x", "as", "nu/kg"];
-console.log(determineProducts(test));*/
+var test = ["W§", "BRUCERV", "§", "2!;", "Mixed", "Nuts", "19,99", "1550", "x", "125,00/kg", "yitKat", "A-Fingev", "45g“", "7,00", "Trnp.", "Apple", "Juice", "7501", "11,00", "0119‘", "Cam", "Flakes", "7500", "8%", "25,50", "m1.\§v|15n", "§m", "chicken", "%", "42,00", "262g", "W", "Banana", "Chiqulta", "9,20", "452g", "x", "18,50/kg", "urange", "7,35", "2850", "x", "21,00/kg", "Mushroum", "6,85", "170g", "x", "as", "nu/kg"];
+/*console.log(determineProducts(test));*/
+
+var prods = determineProducts(test);
+		for (var prod in prods) {
+			/*var expirationd = getNDaysFromNow(groceries[prod][0]);
+			var lifetime = groceries[prod][0];
+			var jsonObj = {
+				"name" : name,
+				"expDate" : expirationd,
+				"lifetime" : lifetime
+			}*/
+
+			addItemToParse(prod);
+		}
 
 // START THE SERVER
 // =============================================================================
