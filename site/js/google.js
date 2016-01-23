@@ -23,10 +23,10 @@ function getStoreCoordinates(product, descript) {
     var currLoc = new google.maps.LatLng(homeCoordinates.lat, homeCoordinates.lng);
 
     // map may be unnecessary
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: currLoc,
-        zoom: 15
-    });
+    //map = new google.maps.Map(document.getElementById('map'), {
+    //    center: currLoc,
+    //    zoom: 15
+    //});
 
     var request = {
         location: currLoc,
@@ -36,20 +36,20 @@ function getStoreCoordinates(product, descript) {
     };
 
     service = new google.maps.places.PlacesService(document.getElementById('map'));
-    service.textSearch(product, descript, request, callback);
-}
-
-// callback for textSearch
-function callback(product, descript, results, status) {
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-        for (var i = 0; i < results.length; i++) {
-            stores.add(results[i]);
+    service.textSearch(request, function (results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+            for (var i = 0; i < results.length; i++) {
+                stores.push(results[i]);
+            }
+            console.log(stores);
+            console.log("product: " + product);
+            console.log("descript: " + descript);
+            createDelivery(product, descript);
         }
-        createDelivery(product, descript);
-    }
-    else {
-        console.error("Something went wrong in retrieving nearby stores: " + status);
-    }
+        else {
+            console.error("Something went wrong in retrieving nearby stores: " + status);
+        }
+    });
 }
 
 // gets user's location
@@ -92,18 +92,3 @@ function revGeocode(product, descript) {
         });
     }
 }
-
-//var googleMapsCallback = function() {
-//    var geocoder = new google.maps.Geocoder(), // Works when google makes the call.
-//        activityMap = new google.maps.Map($("#map")[0], {
-//            center: new google.maps.LatLng(0, 0),
-//            zoom: 0,
-//            mapTypeId: google.maps.MapTypeId.SATELLITE
-//        });
-//
-//    doSomethingMapRelatedInvolvingJQuery(geocoder, map);
-//};
-//$.ajax({
-//    url: "https://maps.googleapis.com/maps/api/js?v=3&callback=googleMapsCallback&sensor=false",
-//    dataType: "script"
-//});
