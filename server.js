@@ -53,7 +53,7 @@ router.use(function(req, res, next) {
 });
 
 router.get('/', function(req, res){
-	res.sendfile(res.sendfile('../site/index.html', {root: __dirname }));
+	res.sendfile(res.sendfile('site/index.html', {root: __dirname }));
 });
 
 // needs an abreviation to look up (:abrv)
@@ -88,7 +88,7 @@ router.route('/add/multiple')
 		res.json("done");
 	});
 
-router.route('add/single')
+router.route('/add/single')
 	.post(function(req, res) {
 		var name = match(req.body.name);
 		if (name == null) {
