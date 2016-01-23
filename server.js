@@ -87,6 +87,12 @@ router.use(function(req, res, next) {
 
 var path    = require("path");
 
+//app.use(express.static(path.join(__dirname, 'public')));
+
+app.use("/styles",  express.static(__dirname + '/public/stylesheets'));
+app.use("/scripts", express.static(__dirname + '/public/javascripts'));
+app.use("/images",  express.static(__dirname + '/public/images'));
+
 app.get('/',function(req,res){
 	res.sendfile(path.join(__dirname + '/index.html'));
 	//__dirname : It will resolve to your project folder.
