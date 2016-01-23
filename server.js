@@ -76,6 +76,20 @@ var port     = process.env.PORT || 8080; // set our port
 
 var router = express.Router();
 
+
+var path    = require("path");
+
+app.use(express.static(path.join(__dirname, './')));
+
+app.use("/styles",  express.static(__dirname + '/styles'));
+app.use("/js", express.static(__dirname + '/js'));
+app.use("/images",  express.static(__dirname + '/images'));
+
+app.get('/',function(req,res){
+   res.sendfile(path.join(__dirname + '/index.html'));
+});
+
+
 // middleware to use for all requests
 router.use(function(req, res, next) {
 	// do logging
@@ -329,11 +343,27 @@ function getNDaysFromNow(n) {
 }
 
 function getReciepe() {
-	parse.find('foodEntry', null, function (err, response) {
-
+	parse.find('foodEntry', '', function (err, response) {
+		console.log(typeof(response));
+		for (var a in response) {
+			console.log("A key is: " + a);
+		}
+		var arr = response.results;
+		ar.sort(function(x, y){ 
+		    if (x.expDate < y.expDate) {
+		        return -1;
+		    }
+		    if (x.expDate > y.expDate) {
+		        return 1;
+		    }
+		    return 0;
+		});
+		console.log(result);
 	}); 
 
 }
+
+//getReciepe();
 
 // START THE SERVER
 // =============================================================================
