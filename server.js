@@ -52,10 +52,17 @@ router.use(function(req, res, next) {
 	next();
 });
 
-router.get('/', function(req, res){
-	res.sendFile(path.join(__dirname, '/site', 'index.html'));
-	//res.sendfile(res.sendfile('/site/index.html', {root: __dirname }));
+router.route('/')
+	.get(function(req, res) {
+		console.log("route");
+		res.sendFile(path.join(__dirname, '/site', 'index.html'));
+		//res.sendfile(res.sendfile('/site/index.html', {root: __dirname }));
 });
+//
+//router.get('/site/index.html', function(req, res){
+//	res.sendFile(path.join(__dirname, '/site', 'index.html'));
+//	//res.sendfile(res.sendfile('/site/index.html', {root: __dirname }));
+//});
 
 // needs an abreviation to look up (:abrv)
 router.route('/abrv/:abrv')
