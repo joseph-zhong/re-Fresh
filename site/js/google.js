@@ -2,14 +2,16 @@
  * Created by Joseph on 1/23/16.
  */
 
-var pos;
+var homeCoordinates;
+var homeAddress;
+var stores = [];
 var map;
 var service;
 
 function initialize() {
-    //pos = getLocation();
-    //console.log(pos);
-    var currLoc = new google.maps.LatLng(pos.lat, pos.lng);
+    //homeCoordinates = getLocation();
+    //console.log(homeCoordinates);
+    var currLoc = new google.maps.LatLng(homeCoordinates.lat, homeCoordinates.lng);
     //console.log(currLoc);
     // may be unnecessary
     map = new google.maps.Map(document.getElementById('map'), {
@@ -32,7 +34,7 @@ function initialize() {
 function callback(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
-            console.log(results[i]);
+            stores.add(results[i]);
         }
     }
 }
@@ -47,7 +49,7 @@ function getLocation() {
                 lng: position.coords.longitude
             };
             console.log(loc);
-            pos = loc;
+            homeCoordinates = loc;
         }, function() {
             console.log('failed to get location...');
             // failed...
@@ -55,5 +57,22 @@ function getLocation() {
     } else {
         // Browser doesn't support Geolocation
         console.log("Browser doesn't support Geolocation");
+    }
+}
+
+function revGeocode() {
+    if(homeCoordinates) {
+        var geocoder = new google.maps.Geocoder;
+        geocoder.geocode({'location': homeCoordinates}, function(results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+                if (results[1]) {
+                    homeAddress = results[1].formatted_address;
+                } else {
+                    window.alert('No results found');
+                }
+            } else {
+                window.alert('Geocoder failed due to: ' + status);
+            }
+        });
     }
 }

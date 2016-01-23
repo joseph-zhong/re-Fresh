@@ -52,7 +52,7 @@ var POSTMATES_URL = "https://api.postmates.com";
  *      Example: "Tell the security guard that you're here to see Alice."
  *
  */
-function createDelivery(quote_id, manifest, manifest_reference, pickup_name,
+function postDelivery(quote_id, manifest, manifest_reference, pickup_name,
                         pickup_address, pickup_phone_number, pickup_business_name,
                         pickup_notes, dropoff_name, dropoff_address,
                         dropoff_phone_number, dropoff_business_name, dropoff_notes) {
@@ -77,4 +77,14 @@ function createDelivery(quote_id, manifest, manifest_reference, pickup_name,
             console.log("Successfully created delivery: " + msg)
         }
     });
+}
+
+
+function createDelivery(product, descript) {
+    var storeAddress = priorityAddress ? priorityAddress : stores[Math.random() * stores.length + 1];
+    var dropoff_name = name ? name : "My Home";
+    revGeocode();
+    while (!homeAddress) {}
+    postDelivery(null, product, null, "Grocery Store", storeAddress, "1231231234",
+        null, descript, dropoff_name, homeAddress, "1231231234", dropoff_name, descript);
 }
