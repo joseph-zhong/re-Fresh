@@ -275,7 +275,12 @@ function addItemToParse(food) {
 	}
 
 	parse.insert('items', item, function (err, response) {
-	  console.log(response);
+		if(!err) {
+			console.log(response);
+		}
+	  	else {
+	  		console.error(err);
+	  	}
 	});
 }
 
