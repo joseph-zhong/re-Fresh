@@ -23,7 +23,7 @@ var POSTMATES_URL = "https://api.postmates.com";
  * pickup_name
  *      Name of the place where the courier will make the pickup.
  *      Example: "Kitten Warehouse"
- * pickup_address (OPTIONAL)
+ * pickup_address
  *      The pickup address for the delivery.
  *      Example: "20 McAllister St, San Francisco, CA"
  * pickup_phone_number
@@ -44,7 +44,7 @@ var POSTMATES_URL = "https://api.postmates.com";
  * dropoff_phone_number
  *      The phone number of the dropoff location.
  *      Example: "415-555-8484"
- * dropoff_business_name
+ * dropoff_business_name (OPTIONAL)
  *      Optional business name of the dropoff location.
  *      Example: "Alice's Cat Cafe"
  * dropoff_notes
