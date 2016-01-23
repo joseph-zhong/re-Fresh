@@ -53,7 +53,7 @@ router.use(function(req, res, next) {
 });
 
 router.get('/', function(req, res){
-	res.sendfile(res.sendfile('../site/index.html', {root: __dirname }));
+	res.sendfile(res.sendfile('./site/index.html', {root: __dirname }));
 });
 
 // needs an abreviation to look up (:abrv)
