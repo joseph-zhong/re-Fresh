@@ -89,13 +89,12 @@ var path    = require("path");
 
 //app.use(express.static(path.join(__dirname, 'public')));
 
-app.use("/styles",  express.static(__dirname + '/public/style'));
-app.use("/js", express.static(__dirname + '/public/js'));
-app.use("/images",  express.static(__dirname + '/public/images'));
+app.use("/styles",  express.static(__dirname + '/style'));
+app.use("/js", express.static(__dirname + '/js'));
+app.use("/images",  express.static(__dirname + '/images'));
 
 app.get('/',function(req,res){
 	res.sendfile(path.join(__dirname + '/index.html'));
-	//__dirname : It will resolve to your project folder.
 });
 
 
