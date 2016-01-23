@@ -97,10 +97,12 @@ router.route('add/single')
 		} else {
 			var expirationd = getNDaysFromNow(groceries[name][0]);
 			var lifetime = groceries[name][0];
+			var descrp = req.body.description;
 			var jsonObj = {
 				"name" : name,
 				"expiration-date" : expirationd,
-				"lifetime" : lifetime
+				"lifetime" : lifetime,
+				"description" : descrp
 			}
 
 			addItemToParse(jsonObj);
