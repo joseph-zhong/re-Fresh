@@ -52,13 +52,19 @@ router.use(function(req, res, next) {
 	next();
 });
 
+var path = require('path');
+
+
+
 router.route('/')
 	.get(function(req, res) {
 		console.log("route");
 		//res.sendFile(path.join(__dirname, 'index.html'));
 		//res.sendFile(path.join(__dirname, 'index.html'));
-		res.sendFile('index.html', { root: __dirname });
+		//res.sendFile('index.html', { root: __dirname });
 		//res.sendfile(res.sendfile('/index.html', {root: __dirname }));
+
+		res.sendFile(path.join(__dirname + '/index.html'));
 });
 //
 //router.get('/site/index.html', function(req, res){
