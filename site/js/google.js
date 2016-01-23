@@ -8,7 +8,7 @@
  *
  * googleSetup function handles all Google services setup
  */
-    
+
 var homeCoordinates;
 var homeAddress;
 var stores = [];
