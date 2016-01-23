@@ -88,7 +88,7 @@ router.route('/add/multiple')
 		res.json("done");
 	});
 
-router.route('add/single')
+router.route('/add/single')
 	.post(function(req, res) {
 		var name = match(req.body.name);
 		if (name == null) {
@@ -105,7 +105,9 @@ router.route('add/single')
 				"description" : descrp
 			}
 
-			addItemToParse(jsonObj);
+			parse.insert('items', josnObj, function (err, response) {
+			  console.log(response);
+			});
 		}
 
 		res.json("done");
@@ -274,7 +276,7 @@ function addItemToParse(food) {
 		"category" : ""
 	}
 
-	parse.insert('items', item, function (err, response) {
+	parse.insert('foodEntry', item, function (err, response) {
 	  console.log(response);
 	});
 }
