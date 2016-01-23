@@ -45,7 +45,7 @@ router.use(function(req, res, next) {
 });
 
 router.get('/', function(req, res){
-	res.json({message: "working"});
+	res.sendfile('site/index.html', {root: __dirname });
 });
 
 router.route('/abrv/:abrv')

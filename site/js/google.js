@@ -8,9 +8,20 @@ var stores = [];
 var map;
 var service;
 
-function initialize() {
+/**
+ * USAGE:
+ * 1) getLocation() to retrieve current coordinates
+ * 2) revGeocode() to convert current coordinates to address
+ * 2) getStoreCoordinates() to retrieve nearby stores' addresses
+ */
+
+function getStoreCoordinates() {
     //homeCoordinates = getLocation();
     //console.log(homeCoordinates);
+    if(!homeCoordinates) {
+        console.error("WARNING: home coordinates not set -- must call getLocation first!");
+        return;
+    }
     var currLoc = new google.maps.LatLng(homeCoordinates.lat, homeCoordinates.lng);
     //console.log(currLoc);
     // may be unnecessary
@@ -37,6 +48,9 @@ function callback(results, status) {
             stores.add(results[i]);
         }
     }
+    else {
+        console.error("Something went wrong in retrieving nearby stores: " + status);
+    }
 }
 
 // gets user's location
@@ -56,7 +70,7 @@ function getLocation() {
         });
     } else {
         // Browser doesn't support Geolocation
-        console.log("Browser doesn't support Geolocation");
+        console.error("Browser doesn't support Geolocation");
     }
 }
 
@@ -66,12 +80,13 @@ function revGeocode() {
         geocoder.geocode({'location': homeCoordinates}, function(results, status) {
             if (status === google.maps.GeocoderStatus.OK) {
                 if (results[1]) {
+                    console.log("successfully reversed geocode");
                     homeAddress = results[1].formatted_address;
                 } else {
-                    window.alert('No results found');
+                    console.error('No results found');
                 }
             } else {
-                window.alert('Geocoder failed due to: ' + status);
+                console.error('Geocoder failed due to: ' + status);
             }
         });
     }
