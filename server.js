@@ -183,9 +183,10 @@ router.route('/add/single')
 
 router.route('/postmates')
 	.post(function(req, res) {
+		console.log(req);
 		console.log(req.body.product);
 		console.log(req.body.descript);
-		console.log(req.body.store);
+		console.log("store: " + req.body.store);
 		console.log(req.body.name);
 		console.log(req.body.homeAddress);
 		createDelivery(req.body.product, req.body.descript, req.body.stores,
@@ -446,10 +447,10 @@ function postDelivery(quote_id, manifest,
 
 function createDelivery(product, descript, stores, name, homeAddress, res2client) {
 	var storeAddress = stores[Math.random() * stores.length + 1].formatted_address;
-	storeAddress = rmLastToken(storeAddress);
+	//storeAddress = rmLastToken(storeAddress);
 	console.log(storeAddress);
-	homeAddress = rmLastToken(homeAddress);
-	console.log(homeAddress);
+	//homeAddress = rmLastToken(homeAddress);
+	//console.log(homeAddress);
 	var dropoff_name = name ? name : "My Home";
 	while (!homeAddress) {}
 	postDelivery(null, product, null, "Grocery Store", storeAddress, "1231231234",
