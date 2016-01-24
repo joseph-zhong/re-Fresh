@@ -563,22 +563,27 @@ function createAndPostQuote(pick_up_address, dropoff_address, resp) {
 		dropoff_address: dropoff_address
 	};
 	postmates.quote(delivery, function(err, res) {
-		console.log("eta: " + res.body.dropoff_eta);
-		console.log("created: " + res.body.created);
+		if(res.body.dropoff_eta && res.body.created) {
+			console.log("eta: " + res.body.dropoff_eta);
+			console.log("created: " + res.body.created);
 
-		client.messages.create({ 
-				to: USER_CELL, 
-				from: MSGSRVC_NUM, 
+			client.messages.create({
+				to: USER_CELL,
+				from: MSGSRVC_NUM,
 				body: "Your item will be ready at "+ res.body.dropoff_eta + "\nhttps://re-fresh1.herokuapp.com/",
 			}, function(err, message) {
 				if (err) {
 					console.log(err);
 				} else {
-					console.log(message.sid); 
+					console.log(message.sid);
 				}
 			});
-		resp.json({"eta" : res.body.dropoff_eta, "created" : res.body.created});
-		resp.send();
+			resp.json({"eta" : res.body.dropoff_eta, "created" : res.body.created});
+			resp.send();
+		}
+		else {
+			console.error("no eta or created");
+		}
 	});
 }
 
