@@ -89,7 +89,7 @@
 //        // `res.body`
 //    });
 //}
-
+var exports = module.exports = {};
 
 function postDelivery(quote_id, manifest,
         manifest_reference, pickup_name, pickup_address, pickup_phone_number,
@@ -120,7 +120,7 @@ function postDelivery(quote_id, manifest,
     });
 }
 
-module.exports.createDelivery = function createDelivery(product, descript, stores, name, homeAddress) {
+exports.createDelivery = function createDelivery(product, descript, stores, name, homeAddress) {
     var storeAddress = stores[Math.random() * stores.length + 1];
     var dropoff_name = name ? name : "My Home";
     while (!homeAddress) {}

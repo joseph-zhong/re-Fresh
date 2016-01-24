@@ -3,7 +3,6 @@ var express    = require('express');
 var bodyParser = require('body-parser');
 var Postmates = require('postmates');
 var postmates = new Postmates('cus_KeAkAy7GIWj1lF', 'b77414cb-ffdd-4e05-b10b-165f2e6464d5');
-var p = require('./postmates.js');
 var app        = express();
 var Parse = require('node-parse-api').Parse;
 var unirest = require('unirest');
@@ -166,9 +165,9 @@ router.route('/add/single')
 		res.json("done");
 	});
 
-router.route('postmates')
+router.route('/postmates')
 	.post(function(req, res) {
-		p.createDelivery(req.body.product, req.body.descript, req.body.stores,
+		createDelivery(req.body.product, req.body.descript, req.body.stores,
 				req.body.name, req.body.homeAddress, res);
 	});
 
@@ -391,6 +390,44 @@ function getRecipeInfo(id, res) {
 
 function callBack(response) {
 	console.log(response);
+}
+
+
+function postDelivery(quote_id, manifest,
+					  manifest_reference, pickup_name, pickup_address, pickup_phone_number,
+					  pickup_business_name, pickup_notes, dropoff_name, dropoff_address,
+					  dropoff_phone_number, dropoff_business_name, dropoff_notes, res2client) {
+
+	var delivery = {"quote_id" : quote_id, "manifest" : manifest,
+		"manifest_reference" : manifest_reference, "pickup_name" : pickup_name,
+		"pickup_address" : pickup_address, "pickup_phone_number" : pickup_phone_number,
+		"pickup_business_name" : pickup_business_name, "pickup_notes" : pickup_notes,
+		"dropoff_name" : dropoff_name, "dropoff_address" : dropoff_address,
+		"dropoff_phone_number" : dropoff_phone_number,
+		"dropoff_business_name" : dropoff_business_name, "dropoff_notes" : dropoff_notes
+	};
+
+	postmates.new(delivery, function(err, res) {
+		if(!err) {
+			console.log(res);
+			//ETA PROCESSING HERE
+			// SEND BACK TO CLIENT
+			// also update parse
+
+			//res2client.send(eta)
+		}
+		else {
+			console.error(err);
+		}
+	});
+}
+
+function createDelivery(product, descript, stores, name, homeAddress, res2client) {
+	var storeAddress = stores[Math.random() * stores.length + 1];
+	var dropoff_name = name ? name : "My Home";
+	while (!homeAddress) {}
+	postDelivery(null, product, null, "Grocery Store", storeAddress, "1231231234",
+			null, descript, dropoff_name, homeAddress, "1231231234", dropoff_name, descript, res2client);
 }
 
 
