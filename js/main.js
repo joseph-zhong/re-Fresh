@@ -98,6 +98,8 @@ function updateTime(startTime, minutes, element) {
 		})
 		.done(function(data) {
 			$.post("http://re-fresh1.herokuapp.com/api/delete", {
+				isExpired: false,
+				name: postName,
 				id: element.id
 			})
 			.done(function(data) {
@@ -111,8 +113,9 @@ function checkRecipe() {
 	$.get("https://re-fresh1.herokuapp.com/api/recommend/recipe", function(data) {
 		if(data) {
 			var div = document.getElementById("recipediv");
+			//var div = document.getElementById("top");
 			div.style.display = "block";
-			div.innerHTML += "Looks like your ";
+			div.innerHTML += "<span>Looks like your ";
 			for(var i = 0; i < data.usedIngreds.length; i++) {
 				if(i == 0) {
 					div.innerHTML += capitalize(data.usedIngreds[i]);
@@ -123,13 +126,37 @@ function checkRecipe() {
 				}
 			}
 			if(data.usedIngreds.length == 1) {
-				div.innerHTML += " is expiring soon! Here are a few recipies.";
+				div.innerHTML += " is expiring soon! Here are a few recipes. Click for more info.</span>";
 			} else { 
-				div.innerHTML += " are expiring soon! Here are a few recipies.";
+				div.innerHTML += " are expiring soon! Here are a few recipes. Click for more info.</span>";
 			}
+			var theID1 = data.data[0].id;
+			div.innerHTML += "<br><br><img src='" + data.data[0].image+ "'><a target='_blank' id='recipe" + theID1 + "'><h1>" + data.data[0].title + "</h1></a>";
+			var url = "https://re-fresh1.herokuapp.com/api/recipe/" + theID1;
+			$.get(url, function(data2) {
+				document.getElementById("recipe" + theID1).href = data2.link;
+			});
+			var theID2 = data.data[1].id;
+			div.innerHTML += "<br><img src='" + data.data[1].image+ "'><a target='_blank' id='recipe" + theID2 + "'><h1>" + data.data[1].title + "</h1></a>";
+			var url = "https://re-fresh1.herokuapp.com/api/recipe/" + theID2;
+			$.get(url, function(data3) {
+				document.getElementById("recipe" + theID2).href = data3.link;
+			});
+			/*for(var d = 0; d < 2; d++) {
+				div.innerHTML += "<br><img src='" + data.data[d].image+ "'><a target='_blank' id='recipe" + theID + "'><h1>" + data.data[d].title + "</h1></a>";
+				var url = "https://re-fresh1.herokuapp.com/api/recipe/" + theID;
+				$.get(url, function(data2) {
+					console.log(document.getElementById("recipe" + theID));
+					document.getElementById("recipe" + theID).href = data2.link;
+				});
+			}*/
 			console.log(data);
 		}
 	});
+}
+
+function hideRecipes() {
+	document.getElementById("recipediv").style.display = "none";
 }
 
 function capitalize(string) {
