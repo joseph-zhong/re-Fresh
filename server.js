@@ -127,7 +127,7 @@ router.use(function(req, res, next) {
 	// do logging
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, g
+  	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type");
 	console.log('API Being Accessed');
 	next();
 });
