@@ -21,6 +21,10 @@ function getStoreCoordinates(product, descript) {
         return;
     }
     var currLoc = new google.maps.LatLng(homeCoordinates.lat, homeCoordinates.lng);
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: currLoc,
+        zoom: 15
+    });
 
     var request = {
         location: currLoc,
@@ -29,7 +33,7 @@ function getStoreCoordinates(product, descript) {
         query: 'grocery stores'
     };
 
-    service = new google.maps.places.PlacesService(document.getElementById('map'));
+    service = new google.maps.places.PlacesService(map);
     service.textSearch(request, function (results, status) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
             for (var i = 0; i < results.length; i++) {
@@ -72,6 +76,7 @@ function revGeocode(product, descript) {
                 if (results[1]) {
                     console.log("successfully reversed geocode");
                     homeAddress = results[1].formatted_address;
+
                     getStoreCoordinates(product, descript);
                 } else {
                     console.error('No results found');
@@ -83,23 +88,15 @@ function revGeocode(product, descript) {
     }
 }
 
+
+
 // product, descript, stores, name, homeAddress
-function sendPostMatesReq(product, descript, stores, name, homeAddress) {
-    //$.ajax({
-    //    type: "POST",
-    //    url: "https://re-fresh1.herokuapp.com/api/postmates",
-    //    data: { "product": product, "descript": descript, "stores": stores,
-    //        "name": name, "homeAddress": homeAddress },
-    //    success: function(eta) {
-    //        console.log("Successfully created delivery: " + eta);
-    //
-    //    }
-    //});
+function sendPostMatesReq(product, descript, name) {
     var data = { "product": product, "descript": descript, "stores": stores,
                 "name": name, "homeAddress": homeAddress };
     $.post("https://re-fresh1.herokuapp.com/api/postmates",
         data,
         function(success) {
-            console.log("Successfully created delivery: " + eta);
+            console.log("Successfully created delivery: " + success);
     });
 }

@@ -423,13 +423,21 @@ function postDelivery(quote_id, manifest,
 }
 
 function createDelivery(product, descript, stores, name, homeAddress, res2client) {
-	var storeAddress = stores[Math.random() * stores.length + 1];
+	var storeAddress = stores[Math.random() * stores.length + 1].formatted_address;
+	storeAddress = rmLastToken(storeAddress);
+	console.log(storeAddress);
+	homeAddress = rmLastToken(homeAddress);
+	console.log(homeAddress);
 	var dropoff_name = name ? name : "My Home";
 	while (!homeAddress) {}
 	postDelivery(null, product, null, "Grocery Store", storeAddress, "1231231234",
 			null, descript, dropoff_name, homeAddress, "1231231234", dropoff_name, descript, res2client);
 }
 
+function rmLastToken(obj) {
+	var str = obj.split(' ').pop();
+	return str.join(" ");
+}
 
 
 // START THE SERVER
