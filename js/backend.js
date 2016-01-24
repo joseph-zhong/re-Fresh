@@ -104,6 +104,17 @@ function sendPostMatesReq(product, descript, name) {
         console.log("Successfully created delivery: " + success);
     });
     console.log('after');
+
+    return {
+      kind: "delivery_quote",
+      id: "dqt_qUdje83jhdk",
+      created: "2016-01-23T10:20:43Z",
+      expires: "2016-01-26T10:09:03Z",
+      fee: 799,
+      currency: "usd",
+      dropoff_eta: "2016-01-23T12:14:03Z",
+      duration: 60
+    };
 }
 
 function getRecommendedRecipes(callback) {
