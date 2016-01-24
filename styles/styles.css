@@ -3,6 +3,10 @@ body {
 	padding:0px;
 }
 
+a {
+	text-decoration:none;
+}
+
 #footer {
 	position: fixed;
 	bottom: 0;
@@ -51,6 +55,7 @@ body {
 
 .itemdescription {
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight:normal!important;
 	color:#999999;
 	font-size:18px;
 	margin-top:-4px;
@@ -83,8 +88,52 @@ body {
 	margin-top:12px;
 }
 
-.mainbuttonm {
-	width:200px;
-	height:60px;
-	background-color:green;
+.mainbutton {
+	position:relative;
+	pointer-events: none;
+	z-index:9999;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color:white;
+	text-align:center;
+	font-weight:bold;
+	padding-top:20px;
+	width:300px;
+	display:block;
+	margin:0px auto;
+	height:40px;
+	background-color:#27ae60;
+	cursor:pointer;
+	border-radius:4px;
+}
+
+.mainbutton:hover {
+	background-color:#2ecc71;
+}
+
+.mainbutton.second {
+	margin-top:20px;
+	background-image:url('../images/plus.png');
+	background-size:24px 24px;
+	background-position:82px 17px;
+	background-repeat:no-repeat;
+}
+
+.mainbutton.first {
+	background-image:url('../images/camera.png');
+	background-size:28px 28px;
+	background-position:70px 14px;
+	background-repeat:no-repeat;
+}
+
+input {
+	cursor:pointer;
+	background-color:blue;
+	z-index:1;
+	position:absolute;
+	width:190px;
+	padding-left:100px;
+	padding-top:10px;
+	padding-bottom:20px;
+	margin-top:-50px;
+	left: calc(50% - 140px);
 }
