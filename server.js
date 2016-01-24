@@ -54,7 +54,7 @@ var descriptions = {
 	"apples" : "10 ct",
 	"oranges" : "10 ct",
 	"potatoes" : "1 sack",
-	"broccoli" : "4 stocks",
+	"broccoli" : "4 bunches",
 	"bread" : "1 loaf",
 	"eggs" : "2 dozen"
 };
@@ -71,6 +71,20 @@ var abrv = {'bf' : 'beef',
   'brd' : 'bread',
   "ggs" : "eggs"
 };
+
+var price = {
+	"beef" : 10.49,
+	"milk" : 8.29,
+	"chicken" : 6.98,
+	"bacon" : 6.99,
+	"salmon" : 8.98,
+	"apples" : 11.99,
+	"oranges" : 5.99,
+	"potatoes" : 8.98,
+	"broccoli" : 10.99,
+	"bread" : 5.99,
+	"eggs" : 4.5
+}
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -149,13 +163,15 @@ router.route('/add/single')
 			var expirationd = getNDaysFromNow(groceries[name][0]);
 			var lifetime = groceries[name][0];
 			var descrp = req.body.description;
-			var category = req.body.category;
+			var category = cats[name];
+			var price = price[name];
 			var jsonObj = {
 				"name" : name,
 				"expDate" : expirationd,
 				"lifetime" : lifetime,
 				"description" : descrp,
-				"category": category
+				"category": category,
+				"price" : price
 			};
 			parse.insert('items', josnObj, function (err, response) {
 			  console.log(response);
@@ -320,7 +336,8 @@ function addItemToParse(food) {
 		"expDate" : getNDaysFromNow(groceries[food][0]),
 		"lifetime" : groceries[food][0],
 		"description" : descriptions[food],
-		"category" : cats[food]
+		"category" : cats[food],
+		"price" : price[food]
 	};
 
 	parse.insert('foodEntry', item, function (err, response) {
@@ -332,6 +349,17 @@ function getNDaysFromNow(n) {
 	var a = new Date();
 	a.setDate(a.getDate() + n);
 	return a;
+}
+
+function getDayDifference(date) {
+	date = new Date(date);
+	var a = new Date();
+	//console.log("the exp date is " + date);
+	var timeDiff = date.getTime() - a.getTime();
+	//console.log("The time diff is : " + timeDiff);
+	var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+	return diffDays;
+
 }
 
 function getRecipe(res) {
@@ -354,21 +382,32 @@ function getRecipe(res) {
 }
 
 function recRecipe(ingreds, res) {
-	console.log(ingreds);
+	//console.log(ingreds);
 	var url = "";
-	if (ingreds.length > 0) {
+	var usedIngreds = [];
+	if (ingreds.length > 0 && getDayDifference(ingreds[0].expDate) <= 3) {
 		url += ingreds[0].name.trim();
-		for (var i = 1; i < Math.min(3, ingreds.length); i++) {
-			url += "," + ingreds[i].name.trim();
+		usedIngreds.push(url);
+		var count = 1;
+		for (var i = 1; count < Math.min(3, ingreds.length) && i < ingreds.length; i++) {
+			if (getDayDifference(ingreds[i].expDate) <= 3) {
+				url += "," + ingreds[i].name.trim();
+				count++;
+				usedIngreds.push(ingreds[i].name.trim());
+			}
 		}
+		console.log(encodeURIComponent(url)); 
+		unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?ingredients=" + url + "&limitLicense=false&number=5&ranking=1")
+		.header("X-Mashape-Key", "68sljwduiumshFCNWmjQRwB9a1T1p1sYYvNjsni2hRqvH6NZUe")
+		.header("Accept", "application/json")
+		.end(function (result) {
+			//result.body.push({"usedIngreds" : usedIngreds});
+			//console.log(result.body);
+		  	res.json({data: result.body, usedIngreds: usedIngreds});
+		});
+	} else {
+		res.json("nothing is going to expire");
 	}
-	console.log(encodeURIComponent(url)); 
-	unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?ingredients=" + url + "&limitLicense=false&number=5&ranking=1")
-	.header("X-Mashape-Key", "68sljwduiumshFCNWmjQRwB9a1T1p1sYYvNjsni2hRqvH6NZUe")
-	.header("Accept", "application/json")
-	.end(function (result) {
-	  res.json(result.body);
-	});
 	/*var host = "https://api.edamam.com/"
 	var url = "search?q="
 	if (ingreds.length > 0) {
