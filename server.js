@@ -520,6 +520,24 @@ function rmLastToken(obj) {
 	return str.join(" ");
 }
 
+// Twilio Credentials 
+var accountSid = 'AC5924461284cb120e61dc3e381b7ef790'; 
+var authToken = '978880b8a6da831e6c982e6bf98b839d'; 
+ 
+//require the Twilio module and create a REST client 
+var client = require('twilio')(accountSid, authToken); 
+ 
+client.messages.create({ 
+	to: "4256774061", 
+	from: "+14253104166", 
+	body: "Hi",   
+}, function(err, message) {
+	if (err) {
+		console.log(err);
+	} else {
+		console.log(message.sid); 
+	}
+});
 
 // START THE SERVER
 // =============================================================================
