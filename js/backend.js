@@ -39,8 +39,8 @@ function getStoreCoordinates() {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
             for (var i = 0; i < results.length; i++) {
                 stores.push(results[i]);
-                console.log(results[i].formatted_address);
             }
+            console.log("stores: " + stores);
         }
         else {
             console.error("Something went wrong in retrieving nearby stores: " + status);
@@ -59,8 +59,7 @@ function getLocation() {
             };
             console.log(loc);
             homeCoordinates = loc;
-            setLocations();
-            //revGeocode();
+            revGeocode();
         }, function() {
             console.log('failed to get location...');
         });
@@ -115,7 +114,7 @@ function sendPostMatesReq(product, descript, name) {
         data: data
     })
     .done(function(msg) {
-        console.log(msg);
+        alert("Data Saved: " + msg);
     });
 
     console.log('after');
@@ -129,53 +128,9 @@ function returnPostMateReq() {
         expires: "2016-01-26T10:09:03Z",
         fee: 799,
         currency: "usd",
-        dropoff_eta: "2016-01-23T12:14:03Z",
+        dropoff_eta: "2016-01-23T10:22:03Z",
         duration: 60
     };
-}
-
-function setLocations() {
-    stores = [
-        '300 E Baltimore Ave, Lansdowne, PA 19050, United States',
-        '4001 Walnut St, Philadelphia, PA 19104, United States',
-    '1501 N Broad St #5, Philadelphia, PA 19122, United States',
-    '202 Market St, Philadelphia, PA 19106, United States',
-    '339 Bainbridge St, Philadelphia, PA 19147, United States',
-    '1312 Walnut St, Philadelphia, PA 19107, United States',
-    '2535 Aramingo Ave, Philadelphia, PA 19125, United States',
-    '3440 Market St, Philadelphia, PA 19104, United States',
-    '7901 Lansdowne Avenue, Upper Darby, PA 19082, United States',
-     '3901 M St, Philadelphia, PA 19124, United States',
-     '7720 West Chester Pike, Upper Darby, PA 19082, United States',
-     '3401 Lancaster Ave, Philadelphia, PA 19104, United States',
-     '2900 S 70th St, Philadelphia, PA 19142, United States',
-     '1215 Filbert St, Philadelphia, PA 19107, United States',
-     '2101 S 10th St, Philadelphia, PA 19148, United States',
-     '6375 Lebanon Ave, Philadelphia, PA 19151, United States',
-     '116 West Township Line Road, Havertown, PA 19083, United States',
-     '314 Horsham Rd, Horsham, PA 19044, United States',
-     '5834 Pulaski Ave, Philadelphia, PA 19144, United States',
-     '1700 Admiral Wilson Blvd, Merchantville, NJ 08109, United States']
-}
-
-function sendPostMatesQuote(pickup_address, dropoff_address) {
-    //var data = { "pickup_address": pickup_address, "dropoff_address" : dropoff_address, "stores": stores };
-    var data = { "pickup_address": pickup_address, "dropoff_address" : stores[parseInt(Math.random() * stores.length + 1)]};
-
-    console.log("pickup_address: " + pickup_address);
-    console.log("dropoff_address: " + dropoff_address);
-    console.log("stores: " + stores);
-    console.log("homeAddress: " + homeAddress);
-    $.ajax({
-            method: "POST",
-            url: "https://re-fresh1.herokuapp.com/api/postmatesQuote",
-            data: data
-        })
-        .done(function(msg) {
-            console.log(msg);
-        });
-
-    console.log('after');
 }
 
 function getRecommendedRecipes(callback) {

@@ -34,12 +34,9 @@ a {
 }
 
 .item:hover {
-	background-color:#e3e3e3;
-	cursor:pointer;
 }
 
 .item:active {
-	background-color:#e3e3e3;
 }
 
 .itemname {
@@ -136,4 +133,53 @@ input {
 	padding-bottom:20px;
 	margin-top:-50px;
 	left: calc(50% - 140px);
+}
+
+.orderbutton {
+	height:30px;
+	width:auto;
+	text-align:center;
+	font-size:16px;
+	padding-right:10px;
+	padding-top:10px;
+	border:2px solid #37454f;
+	border-radius:4px;
+	padding-left:8px;
+	position:absolute;
+	right:0;
+	top:0;
+	margin-top:24px;
+	margin-right:100px;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color:#37454f;
+	font-weight:bold;
+	cursor:pointer;
+	background-image:url('../images/postmates.png');
+	background-size:36px 30px;
+	background-repeat:no-repeat;
+	background-position:5px 5px;
+}
+
+.orderbutton:hover {
+	border:2px solid #999999;
+	color: #999999; 
+}
+
+#recipediv {
+	width:90%;
+	height:45px;
+	background-color:#e74c3c;
+	position: fixed;
+	bottom: 0;
+	display:block;
+	margin-left:5%;
+	margin-right:5%;
+	margin-bottom:120px;
+	border-radius:4px;
+	color:white;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight:bold;
+	padding-left:15px;
+	padding-top:5px;
+	display:none;
 }
