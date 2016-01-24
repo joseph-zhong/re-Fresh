@@ -183,6 +183,15 @@ router.route('/add/single')
 		res.json("done");
 	});
 
+router.route('/add/newItem')
+	.post(function(req, res){
+		var name=req.body.name;
+		groceries[name]=[req.body.lifetime,req.body.lifetime];
+		cats[name]=req.body.category;
+		description[name]=req.body.description;
+		abrv[name]=removeAllVowels(name);
+	});
+
 router.route('/delete')
 	.post(function(req, res) {
 		parse.delete('foodEntry', req.body.id, function (err, response) {
