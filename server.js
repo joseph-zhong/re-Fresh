@@ -6,7 +6,13 @@ var postmates = new Postmates('cus_KeAkAy7GIWj1lF', 'b77414cb-ffdd-4e05-b10b-165
 var app        = express();
 var Parse = require('node-parse-api').Parse;
 var unirest = require('unirest');
+var CronJob = require('cron').CronJob;
 
+var USER_CELL = "4256774061";
+var MSGSRVC_NUM = "+14253104166";
+
+
+// Parse Credentials
 var options = {
 	app_id : "2TEGFm48tpsJ7Ki02AbOsXKTbQZKzhc4RFhR7S7p",
 	api_key : "tFMOzm7J01GxnoPbGrHDAXGCsrGoeGrZR0Sao7Ny"
@@ -19,11 +25,13 @@ var authToken = '978880b8a6da831e6c982e6bf98b839d';
 //require the Twilio module and create a REST client 
 var client = require('twilio')(accountSid, authToken); 
  
+// e... credentials 
 var eapp_id = "a750fdb2";
 var eapp_key = "143b365c3f4cf72c75d73802ce735614";
 
 var parse = new Parse(options);
 
+// In memory databases
 var groceries = {
 	"beef" : [2,3],
 	"milk" : [5, 7],
@@ -35,7 +43,8 @@ var groceries = {
 	"potatoes" : [21, 35],
 	"broccoli" : [7, 14],
 	"bread" : [5, 7],
-	"eggs" : [30,30]
+	"eggs" : [30,30],
+	"tomat"
 };
 
 var cats = {
@@ -189,31 +198,17 @@ router.route('/add/single')
 
 		res.json("done");
 	});
-
 router.route('/add/newItem')
 	.post(function(req, res){
-		var name=req.body.name;
-		groceries[name]=[req.body.lifetime,req.body.lifetime];
-		cats[name]=req.body.category;
-		description[name]=req.body.description;
-		abrv[name]=removeAllVowels(name);
+		var name = req.body.name;
+		groceries[name] = [req.body.lifetime,req.body.lifetime];
+		cats[name] = req.body.category;
+		description[name] = req.body.description;
+		abrv[name] = removeVowels(name);
 	});
 
 router.route('/delete')
 	.post(function(req, res) {
-		if (req.body.needsTextNotification) {
-			client.messages.create({ 
-				to: "4256774061", 
-				from: "+14253104166", 
-				body: "Your item: "+ req.body.name +" has expired \n reorder here: https://re-fresh1.herokuapp.com/",   
-			}, function(err, message) {
-				if (err) {
-					console.log(err);
-				} else {
-					console.log(message.sid); 
-				}
-			});
-		}
 		parse.delete('foodEntry', req.body.id, function (err, response) {
 			if (err) {
 				res.json({"err": err});
@@ -221,6 +216,24 @@ router.route('/delete')
 				res.json({"success" : response});
 			}
 		})
+	});
+
+
+router.route('/expired')
+	.get(function(req, res) {
+		client.messages.create({ 
+				to: USER_CELL, 
+				from: MSGSRVC_NUM, 
+				body: "Your item: "+ req.body.name + " has expired \n" + 
+					 " reorder here: https://re-fresh1.herokuapp.com/",   
+			}, function(err, message) {
+				if (err) {
+					console.log(err);
+				} else {
+					console.log(message.sid); 
+				}
+			});
+		res.json("done");
 	});
 
 router.route('/postmates')
@@ -359,7 +372,21 @@ function getEditDistance(a, b){
 function removeAllVowels() {
 	var arr = [];
 	for (var g in groceries) {
-		var res = "";
+		/*var res = "";
+		for (var i = 0; i < g.length; i++) {
+			//console.log(g[i]);
+			var c = g[i];
+			if (['a', 'e', 'i', 'o', 'u'].indexOf(c.toLowerCase()) == -1) {
+				res += g[i];
+			}
+		}*/
+		arr.push(removeVowels(g));
+	}
+	console.log(arr);
+}
+
+function removeVowels(g) {
+	var res = "";
 		for (var i = 0; i < g.length; i++) {
 			//console.log(g[i]);
 			var c = g[i];
@@ -367,9 +394,8 @@ function removeAllVowels() {
 				res += g[i];
 			}
 		}
-		arr.push(res);
-	}
-	console.log(arr);
+
+		return res;
 }
 
 function addItemToParse(food) {
@@ -548,6 +574,42 @@ function rmLastToken(obj) {
 	var str = obj.split(' ').pop();
 	return str.join(" ");
 }
+
+var job = new CronJob('00 30 11 * * 0-6', function() {
+	parse.find('foodEntry', '', function (err, response) {
+		var data = response.results;
+		for (var i = 0; i < data.length; i++) {
+			var item = data[i];
+			if (getDayDifference(data.expired) <= 1 && !data.isNotified) {
+				client.messages.create({ 
+				to: USER_CELL, 
+				from: MSGSRVC_NUM, 
+				body: "Your item: "+ req.body.name + " has expired \n" + 
+					 " reorder here: https://re-fresh1.herokuapp.com/",   
+				}, function(err, message) {
+					if (err) {
+						console.log(err);
+					} else {
+						console.log(message.sid); 
+					}
+				});
+				data.isNotified = true;
+			}
+		}
+	});
+  /*
+   * Runs every day
+   * at 11:30:00 AM. It does not run on Saturday
+   * or Sunday.
+   */
+  }, function () {
+    /* This function is executed when the job stops */
+  },
+  start: true, /* Start the job right now */
+  timeZone: 'America/Los_Angeles' /* Time zone of this job. */
+);
+
+job.start();
 
 
 
