@@ -77,7 +77,7 @@ function revGeocode() {
                     console.log("successfully reversed geocode");
                     homeAddress = results[1].formatted_address;
                     console.log("homeAddress: " + homeAddress);
-                    getStoreCoordinates();
+                    //getStoreCoordinates();
                 } else {
                     console.error('No results found');
                 }
@@ -162,9 +162,8 @@ function mainBackend() {
 }
 
 function sendPostMatesQuote(pickup_address, dropoff_address) {
-    //var data = { "pickup_address": pickup_address, "dropoff_address" : dropoff_address, "stores": stores };
-    var data = { "pickup_address": pickup_address, "dropoff_address" : stores[parseInt(Math.random() * stores.length + 1)]};
-
+    //var data = { "pickup_address": pickup_address, "dropoff_address" : stores[parseInt(Math.random() * stores.length + 1)]};
+    var data = { "pickup_address": pickup_address, "dropoff_address" : dropoff_address };
     console.log("pickup_address: " + pickup_address);
     console.log("dropoff_address: " + dropoff_address);
     console.log("stores: " + stores);

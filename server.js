@@ -2,7 +2,7 @@
 var express    = require('express');
 var bodyParser = require('body-parser');
 var Postmates = require('postmates');
-var postmates = new Postmates('cus_KeAkAy7GIWj1lF', 'b77414cb-ffdd-4e05-b10b-165f2e6464d5');
+var postmates = new Postmates('cus_KeAkAy7GIWj1lF', '51a61f0e-4833-4745-9f3d-c48853e76a71');
 var app        = express();
 var Parse = require('node-parse-api').Parse;
 var unirest = require('unirest');
@@ -21,7 +21,7 @@ var options = {
 // Twilio Credentials 
 var accountSid = 'AC5924461284cb120e61dc3e381b7ef790'; 
 var authToken = '978880b8a6da831e6c982e6bf98b839d'; 
- 
+
 //require the Twilio module and create a REST client 
 var client = require('twilio')(accountSid, authToken); 
  
@@ -127,7 +127,7 @@ router.use(function(req, res, next) {
 	// do logging
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, g
 	console.log('API Being Accessed');
 	next();
 });
@@ -563,7 +563,7 @@ function createAndPostQuote(pick_up_address, dropoff_address, resp) {
 		dropoff_address: dropoff_address
 	};
 	postmates.quote(delivery, function(err, res) {
-		if(res.body.dropoff_eta && res.body.created) {
+		if(res.body.dropoff_eta || res.body.created) {
 			console.log("eta: " + res.body.dropoff_eta);
 			console.log("created: " + res.body.created);
 
