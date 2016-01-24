@@ -62,13 +62,15 @@ function loadItems() {
 }
 
 function reorder(element) {
+	event.stopPropagation();
 	if(element.style.backgroundImage !== "none") {
 		element.style.backgroundImage = "url('images/loading.gif')";
 		element.style.backgroundSize = "22px 20px";
 		element.style.backgroundPosition = "12px 10px";
+		mainBackend();
 	 	setTimeout(function() {
 			displayReorder(element);
-		}, 2000);
+		}, 9000);
 	} else {
 		return false;
 	}
@@ -76,7 +78,7 @@ function reorder(element) {
 
 function displayReorder(element) {
 	//alert(element.previousSibling.innerHTML);
-	var data = returnPostMateReq();
+	console.log(obj);
 	//console.log(data);
 	//console.log(element);
 	var time = Date.parse(data.dropoff_eta) - Date.parse(data.created);
@@ -135,7 +137,7 @@ function checkRecipe() {
 				div.innerHTML += " are expiring soon! Here are a few recipes. Click for more info.</span>";
 			}
 			var theID1 = data.data[0].id;
-			div.innerHTML += "<br><br><img src='" + data.data[0].image+ "'><a target='_blank' id='recipe" + theID1 + "'><h1>" + data.data[0].title + "</h1></a>";
+			div.innerHTML += "<br><img src='" + data.data[0].image+ "'><a target='_blank' id='recipe" + theID1 + "'><h1>" + data.data[0].title + "</h1></a>";
 			var url = "https://re-fresh1.herokuapp.com/api/recipe/" + theID1;
 			$.get(url, function(data2) {
 				document.getElementById("recipe" + theID1).href = data2.link;
