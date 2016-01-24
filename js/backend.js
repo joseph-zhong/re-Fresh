@@ -120,28 +120,32 @@ function sendPostMatesReq(product, descript, name) {
     console.log('after');
 }
 
-function setLocations() {
-    stores = [
-        '300 E Baltimore Ave, Lansdowne, PA 19050, United States',
-        '4001 Walnut St, Philadelphia, PA 19104, United States',
-        '1501 N Broad St #5, Philadelphia, PA 19122, United States',
-        '202 Market St, Philadelphia, PA 19106, United States',
-        '339 Bainbridge St, Philadelphia, PA 19147, United States',
-        '1312 Walnut St, Philadelphia, PA 19107, United States',
-        '2535 Aramingo Ave, Philadelphia, PA 19125, United States',
-        '3440 Market St, Philadelphia, PA 19104, United States',
-        '7901 Lansdowne Avenue, Upper Darby, PA 19082, United States',
-        '3901 M St, Philadelphia, PA 19124, United States',
-        '7720 West Chester Pike, Upper Darby, PA 19082, United States',
-        '3401 Lancaster Ave, Philadelphia, PA 19104, United States',
-        '2900 S 70th St, Philadelphia, PA 19142, United States',
-        '1215 Filbert St, Philadelphia, PA 19107, United States',
-        '2101 S 10th St, Philadelphia, PA 19148, United States',
-        '6375 Lebanon Ave, Philadelphia, PA 19151, United States',
-        '116 West Township Line Road, Havertown, PA 19083, United States',
-        '314 Horsham Rd, Horsham, PA 19044, United States',
-        '5834 Pulaski Ave, Philadelphia, PA 19144, United States',
-        '1700 Admiral Wilson Blvd, Merchantville, NJ 08109, United States']
+stores = [
+    '300 E Baltimore Ave, Lansdowne, PA 19050, United States',
+    '4001 Walnut St, Philadelphia, PA 19104, United States',
+    '1501 N Broad St #5, Philadelphia, PA 19122, United States',
+    '202 Market St, Philadelphia, PA 19106, United States',
+    '339 Bainbridge St, Philadelphia, PA 19147, United States',
+    '1312 Walnut St, Philadelphia, PA 19107, United States',
+    '2535 Aramingo Ave, Philadelphia, PA 19125, United States',
+    '3440 Market St, Philadelphia, PA 19104, United States',
+    '7901 Lansdowne Avenue, Upper Darby, PA 19082, United States',
+    '3901 M St, Philadelphia, PA 19124, United States',
+    '7720 West Chester Pike, Upper Darby, PA 19082, United States',
+    '3401 Lancaster Ave, Philadelphia, PA 19104, United States',
+    '2900 S 70th St, Philadelphia, PA 19142, United States',
+    '1215 Filbert St, Philadelphia, PA 19107, United States',
+    '2101 S 10th St, Philadelphia, PA 19148, United States',
+    '6375 Lebanon Ave, Philadelphia, PA 19151, United States',
+    '116 West Township Line Road, Havertown, PA 19083, United States',
+    '314 Horsham Rd, Horsham, PA 19044, United States',
+    '5834 Pulaski Ave, Philadelphia, PA 19144, United States',
+    '1700 Admiral Wilson Blvd, Merchantville, NJ 08109, United States']
+
+function mainBackend() {
+    var objs = sendPostMatesQuote(stores[parseInt(Math.random() * stores.length)], homeAddress);
+    while(!obj) {}
+    return objs;
 }
 
 function sendPostMatesQuote(pickup_address, dropoff_address) {
@@ -158,7 +162,7 @@ function sendPostMatesQuote(pickup_address, dropoff_address) {
             data: data
         })
         .done(function(msg) {
-            console.log(msg);
+            return msg;
         });
 
     console.log('after');
