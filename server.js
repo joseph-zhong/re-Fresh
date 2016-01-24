@@ -166,7 +166,7 @@ router.route('/add/single')
 		res.json("done");
 	});
 
-router.route('postmates')
+router.route('/postmates')
 	.post(function(req, res) {
 		p.createDelivery(req.body.product, req.body.descript, req.body.stores,
 				req.body.name, req.body.homeAddress, res);
