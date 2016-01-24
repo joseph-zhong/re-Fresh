@@ -26,6 +26,7 @@
     "node-parse-api": "*",
     "postmates": "^1.0.2",
     "unirest" : "*",
-    "twilio": "*"
+    "twilio": "*",
+    "cron": "*"
   }
 }
