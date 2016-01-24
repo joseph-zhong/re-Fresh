@@ -8,7 +8,7 @@ var Parse = require('node-parse-api').Parse;
 var unirest = require('unirest');
 var CronJob = require('cron').CronJob;
 
-var USER_CELL = "4256774061";
+var USER_CELL = "2069138297";
 var MSGSRVC_NUM = "+14253104166";
 
 
