@@ -422,7 +422,7 @@ function postDelivery(quote_id, manifest,
 	});
 }
 
-function createDelivery(product, descript, stores, name, homeAddress) {
+function createDelivery(product, descript, stores, name, homeAddress, res2client) {
 	var storeAddress = stores[Math.random() * stores.length + 1];
 	var dropoff_name = name ? name : "My Home";
 	while (!homeAddress) {}
