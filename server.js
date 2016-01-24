@@ -569,7 +569,7 @@ function createAndPostQuote(pick_up_address, dropoff_address, resp) {
 		client.messages.create({ 
 				to: USER_CELL, 
 				from: MSGSRVC_NUM, 
-				body: "Your item will be ready at "+ res.body.dropoff_eta + "\nhttps://re-fresh1.herokuapp.com/",
+				body: "Your item will be ready at "+ res.body.dropoff_eta.toUTCString() + "\nhttps://re-fresh1.herokuapp.com/",
 			}, function(err, message) {
 				if (err) {
 					console.log(err);
