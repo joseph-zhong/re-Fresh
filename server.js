@@ -251,8 +251,8 @@ router.route('/postmates')
 router.route('/postmatesQuote')
 	.post(function(req, res) {
 		console.log(req);
-		console.log("home: " + req.body.homeAddress);
-		console.log("store: " + req.body.store);
+		//console.log("home: " + req.body.homeAddress);
+		//console.log("store: " + req.body.store);
 		console.log("pickup_address: " + req.body.pickup_address);
 		console.log("dropoff_address: " + req.body.dropoff_address);
 		createAndPostQuote(req.body.pickup_address, req.body.dropoff_address, res);
