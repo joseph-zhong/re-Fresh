@@ -419,7 +419,7 @@ function recRecipe(ingreds, res) {
 		  	res.json({data: result.body, usedIngreds: usedIngreds});
 		});
 	} else {
-		res.json("nothing is going to expire");
+		res.json(null);
 	}
 	/*var host = "https://api.edamam.com/"
 	var url = "search?q="
