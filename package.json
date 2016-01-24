@@ -25,6 +25,7 @@
     "morgan": "*",
     "node-parse-api": "*",
     "postmates": "^1.0.2",
-    "unirest" : "*"
+    "unirest" : "*",
+    "twilio": "*"
   }
 }
