@@ -167,6 +167,11 @@ router.route('/add/single')
 
 router.route('/postmates')
 	.post(function(req, res) {
+		console.log(req.body.product);
+		console.log(req.body.descript);
+		console.log(req.body.store);
+		console.log(req.body.name);
+		console.log(req.body.homeAddress);
 		createDelivery(req.body.product, req.body.descript, req.body.stores,
 				req.body.name, req.body.homeAddress, res);
 	});
@@ -280,7 +285,7 @@ function getEditDistance(a, b){
   }
 
   return matrix[b.length][a.length];
-};
+}
 
 function removeAllVowels() {
 	var arr = [];

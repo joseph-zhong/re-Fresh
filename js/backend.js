@@ -88,16 +88,13 @@ function revGeocode(product, descript) {
     }
 }
 
-
-
 // product, descript, stores, name, homeAddress
 function sendPostMatesReq(product, descript, name) {
     var data = { "product": product, "descript": descript, "stores": stores,
                 "name": name, "homeAddress": homeAddress };
-    $.post("https://re-fresh1.herokuapp.com/api/postmates",
-        data,
-        function(success) {
-            console.log("Successfully created delivery: " + success);
+    $.post("https://re-fresh1.herokuapp.com/api/postmates", data,
+    function(success) {
+        console.log("Successfully created delivery: " + success);
     });
 }
 
