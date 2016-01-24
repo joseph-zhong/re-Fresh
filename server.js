@@ -511,6 +511,7 @@ function createAndPostQuote(pick_up_address, dropoff_address, resp) {
 		console.log("eta: " + res.body.dropoff_eta);
 		console.log("created: " + res.body.created);
 		resp.json({"eta" : res.body.dropoff_eta, "created" : res.body.created});
+		resp.send();
 	});
 }
 
