@@ -28,7 +28,7 @@ function loadItems() {
 					} else {
 						dateString = Math.round(daysLeft/31) + "m";
 					}
-					item.attr("id", object.get("id"));
+					item.attr("id", object.id);
 					item.find('.itemname').html(capitalize(object.get("name")));
 					item.find('.itemdescription').html(capitalize(object.get("description")));
 					item.find('.small').removeClass("p30");
@@ -62,12 +62,16 @@ function loadItems() {
 }
 
 function reorder(element) {
-	element.style.backgroundImage = "url('images/loading.gif')";
-	element.style.backgroundSize = "22px 20px";
-	element.style.backgroundPosition = "12px 10px";
- 	setTimeout(function() {
-		displayReorder(element);
-	}, 2000);
+	if(element.style.backgroundImage !== "none") {
+		element.style.backgroundImage = "url('images/loading.gif')";
+		element.style.backgroundSize = "22px 20px";
+		element.style.backgroundPosition = "12px 10px";
+	 	setTimeout(function() {
+			displayReorder(element);
+		}, 2000);
+	} else {
+		return false;
+	}
 }
 
 function displayReorder(element) {
@@ -165,6 +169,35 @@ function capitalize(string) {
 
 function round(num) {
     return Math.ceil(num * 100) / 100;
+}
+
+function triggerTouch(element) {
+	if(element.className !== "item toggle") {
+		var items = document.getElementsByClassName("item");
+		for(var d = 0; d < items.length; d++) {
+			items[d].className = "item";
+		}
+		$(element).toggleClass("toggle");
+		document.getElementById("addbutton").style.display = "none";
+		document.getElementById("deletebutton").style.display = "block";
+		document.getElementById("deletebutton").style.backgroundImage = "url('images/delete.png')";
+	} else {
+		$(element).toggleClass("toggle");
+		document.getElementById("addbutton").style.display = "block";
+		document.getElementById("deletebutton").style.display = "none";
+		document.getElementById("deletebutton").style.backgroundImage = "url('images/plus.png')";
+	}
+}
+
+function deleteToggled() {
+	var item = document.getElementsByClassName("toggle")[0];
+	$.post("http://re-fresh1.herokuapp.com/api/delete", {
+		isExpired: false,
+		id: item.id
+	})
+	.done(function(data) {
+		window.location.reload();
+	});
 }
 
 // js functiont that takes parse parameters and returns 2h etc.

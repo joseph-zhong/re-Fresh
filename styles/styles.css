@@ -13,17 +13,62 @@ a {
 	width: 100%;
 }
 
-#buttonright {
-	width:70px;
-	height:70px;
-	float:right;
-	background-color:#34495e;
-}
-
 #addbutton {
 	width:100%;
-	height:70px;
+	height:66px;
 	background-color:#27ae60;
+	background-image:url('../images/add.png');
+	background-size:30px 30px;
+	background-position:calc(50% - 100px) 19px;
+	background-repeat:no-repeat;
+	padding-top:4px;
+}
+
+.toggle {
+	background-color:#e3e3e3;
+}
+
+#deletebutton {
+	display:none;
+	width:100%;
+	height:66px;
+	background-color:red;
+	background-image:url('../images/add.png');
+	background-size:30px 30px;
+	background-position:calc(50% - 100px) 19px;
+	background-repeat:no-repeat;
+	padding-top:4px;
+}
+
+#deletebutton h1 {
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight:bold;
+	color:white;
+	font-size:24px;
+	text-align:center;
+}
+
+#backbutton {
+	width:100%;
+	height:66px;
+	background-color:red;
+	padding-top:4px;
+}
+
+#backbutton h1 {
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight:bold;
+	color:white;
+	font-size:24px;
+	text-align:center;
+}
+
+#addbutton h1 {
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight:bold;
+	color:white;
+	font-size:24px;
+	text-align:center;
 }
 
 .item {
@@ -172,14 +217,14 @@ input {
 	border:2px solid #e74c3c;
 	position: fixed;
 	bottom: 0;
-	margin-left:5%;
-	margin-right:5%;
+	margin-left:calc(5% - 7px);
+	margin-right:calc(5% - 7px);
 	margin-bottom:100px;
 	border-radius:4px;
 	color:#333333;
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-weight:bold;
-	padding-left:15px;
+	padding-left:14px;
 	padding-top:5px;
 	padding-bottom:5px;
 	display:none;
@@ -237,16 +282,23 @@ input {
 
 #navbar {
 	width:100%;
-	font-family: helvetica;
 	height:50px;
-	color:white;
-	text-align: center;
+	padding-top:10px;
 	background-color:#27ae60;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight:bold;
+	color:white;
+	font-size:14px;
+	background-image:url('../images/logo.png');
+	background-size:35px 35px;
+	background-position:calc(50% - 80px) 10px;
+	background-repeat:no-repeat;
 }
 
-#title{
-	padding:5px;
+#navbar h1 {
 	margin:0px;
+	padding:0px;
+	text-align:center;
 }
 
 #recipediv h1 {
@@ -254,7 +306,6 @@ input {
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-weight:bold;
 	font-size:24px;
-	text-decoration:underline;
 	cursor:pointer;
 	padding-top:18px;
 	margin-top:0px;

@@ -11,9 +11,9 @@
 </head>
 <body>
 	<div id="navbar">
-		<h1 id="title">Refresh</h1>
+		<h1>Refresh</h1>
 	</div>
-	<div id="template" class="item" style="display:none">
+	<div id="template" class="item" onclick="triggerTouch(this)" style="display:none">
 		<div class="icon" style="background-image:url('images/template.png');"></div>
 		<h1 class="itemname">template</h1>
 		<h1 class="itemdescription">template</h1>
@@ -34,9 +34,13 @@
 		<div id="closerecipes" onclick="hideRecipes()">X</div>
 	</div>
 	<div id="footer">
-		<div id="buttonright">
-		</div>
-		<div id="addbutton">
+		<a href="add.html">
+			<div id="addbutton">
+				<h1>Add item(s)</h1>
+			</div>
+		</a>
+		<div id="deletebutton" onclick="deleteToggled()">
+			<h1>Delete item</h1>
 		</div>
 	</div>
 </body>

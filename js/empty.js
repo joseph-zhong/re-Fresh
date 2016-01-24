@@ -3,10 +3,12 @@ $(document).ready(function() {
 	pic3.src="images/loading.gif";
 });
 
-function previewFile(){
-	document.getElementById("emptyicon").src = "images/loading.gif";
-	document.getElementById("emptyicon").style.marginBottom = "100px";
-	document.getElementById("emptytext").style.display = "none";
+function previewFile(isFirst) {
+	if(isFirst) {
+		document.getElementById("emptyicon").src = "images/loading.gif";
+		document.getElementById("emptyicon").style.marginBottom = "100px";
+		document.getElementById("emptytext").style.display = "none";
+	}
 	var file = document.querySelector('input[type=file]').files[0]; //sames as here
 	var reader = new FileReader();
 
