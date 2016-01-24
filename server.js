@@ -3,7 +3,6 @@ var express    = require('express');
 var bodyParser = require('body-parser');
 var Postmates = require('postmates');
 var postmates = new Postmates('cus_KeAkAy7GIWj1lF', 'b77414cb-ffdd-4e05-b10b-165f2e6464d5');
-//var p = require('./postmates.js');
 var app        = express();
 var Parse = require('node-parse-api').Parse;
 var unirest = require('unirest');
@@ -168,7 +167,7 @@ router.route('/add/single')
 
 router.route('/postmates')
 	.post(function(req, res) {
-		p.createDelivery(req.body.product, req.body.descript, req.body.stores,
+		createDelivery(req.body.product, req.body.descript, req.body.stores,
 				req.body.name, req.body.homeAddress, res);
 	});
 
