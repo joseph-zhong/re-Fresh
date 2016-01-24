@@ -92,10 +92,19 @@ function revGeocode(product, descript) {
 function sendPostMatesReq(product, descript, name) {
     var data = { "product": product, "descript": descript, "stores": stores,
                 "name": name, "homeAddress": homeAddress };
-    $.post("https://re-fresh1.herokuapp.com/api/postmates", data,
-    function(success) {
+    console.log("omgomgomg");
+    console.log(data);
+
+    $.post("https://re-fresh1.herokuapp.com/api/postmates", {
+            "product": product,
+            "descript": descript,
+            "stores": stores,
+            "name": name,
+            "homeAddress": homeAddress
+        }).done(function(success) {
         console.log("Successfully created delivery: " + success);
     });
+    console.log('after');
 }
 
 function getRecommendedRecipes(callback) {
