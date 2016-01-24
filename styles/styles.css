@@ -237,7 +237,6 @@ input {
 
 #navbar {
 	width:100%;
-	margin:0;
 	font-family: helvetica;
 	height:50px;
 	color:white;
@@ -247,6 +246,7 @@ input {
 
 #title{
 	padding:5px;
+	margin:0px;
 }
 
 #recipediv h1 {
