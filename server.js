@@ -213,7 +213,7 @@ router.route('/postmatesQuote')
 		console.log("store: " + req.body.store);
 		console.log("pickup_address: " + req.body.pickup_address);
 		console.log("dropoff_address: " + req.body.dropoff_address);
-		createAndPostQuote(req.body.pickup_address, req.body.dropoff_address);
+		createAndPostQuote(req.body.pickup_address, req.body.dropoff_address, res);
 	});
 
 router.route('/recommend/recipe')
@@ -502,7 +502,7 @@ function createDelivery(product, descript, stores, name, homeAddress) {
 			null, descript, dropoff_name, homeAddress, "1231231234", dropoff_name, descript);
 }
 
-function createAndPostQuote(pick_up_address, dropoff_address) {
+function createAndPostQuote(pick_up_address, dropoff_address, resp) {
 	var delivery = {
 		pickup_address: pick_up_address,
 		dropoff_address: dropoff_address
@@ -510,6 +510,7 @@ function createAndPostQuote(pick_up_address, dropoff_address) {
 	postmates.quote(delivery, function(err, res) {
 		console.log("eta: " + res.body.dropoff_eta);
 		console.log("created: " + res.body.created);
+		resp.json({"eta" : res.body.dropoff_eta, "created" : res.body.created});
 	});
 }
 
