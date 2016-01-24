@@ -155,6 +155,8 @@ router.route('/add/multiple')
 
 router.route('/add/single')
 	.post(function(req, res) {
+		console.log(req.body.name);
+		console.log(req.body.description);
 		var name = match(req.body.name);
 		if (name == null) {
 			res.json("Provide a valid name");
@@ -164,21 +166,32 @@ router.route('/add/single')
 			var lifetime = groceries[name][0];
 			var descrp = req.body.description;
 			var category = cats[name];
-			var price = price[name];
+			var priceTag = price[name];
 			var jsonObj = {
 				"name" : name,
 				"expDate" : expirationd,
 				"lifetime" : lifetime,
 				"description" : descrp,
 				"category": category,
-				"price" : price
+				"price" : priceTag
 			};
-			parse.insert('items', josnObj, function (err, response) {
+			parse.insert('foodEntry', jsonObj, function (err, response) {
 			  console.log(response);
 			});
 		}
 
 		res.json("done");
+	});
+
+router.route('/delete')
+	.post(function(req, res) {
+		parse.delete('foodEntry', req.body.id, function (err, response) {
+			if (err) {
+				res.json({"err": err});
+			} else {
+				res.json({"success" : response});
+			}
+		})
 	});
 
 router.route('/postmates')
