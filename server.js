@@ -73,17 +73,17 @@ var abrv = {'bf' : 'beef',
 };
 
 var price = {
-	"beef" : "10.49",
-	"milk" : "8.29",
-	"chicken" : "6.98",
-	"bacon" : "6.99",
-	"salmon" : "8.98",
-	"apples" : "11.99",
-	"oranges" : "5.99",
-	"potatoes" : "8.98",
-	"broccoli" : "10.99",
-	"bread" : "5.99",
-	"eggs" : "4.5"
+	"beef" : 10.49,
+	"milk" : 8.29,
+	"chicken" : 6.98,
+	"bacon" : 6.99,
+	"salmon" : 8.98,
+	"apples" : 11.99,
+	"oranges" : 5.99,
+	"potatoes" : 8.98,
+	"broccoli" : 10.99,
+	"bread" : 5.99,
+	"eggs" : 4.5
 }
 
 app.use(bodyParser.urlencoded({ extended: true }));
