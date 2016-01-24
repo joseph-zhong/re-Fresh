@@ -167,6 +167,7 @@ router.route('/add/single')
 
 router.route('/postmates')
 	.post(function(req, res) {
+		console.log(req);
 		console.log(req.body.product);
 		console.log(req.body.descript);
 		console.log("store: " + req.body.store);

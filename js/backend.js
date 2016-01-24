@@ -15,11 +15,12 @@ var map;
 var service;
 
 
-function getStoreCoordinates(product, descript) {
+function getStoreCoordinates() {
     if(!homeCoordinates) {
         console.error("WARNING: home coordinates not set -- must call getLocation first!");
         return;
     }
+    console.log("xxxxxxx" + homeCoordinates.lat);
     var currLoc = new google.maps.LatLng(homeCoordinates.lat, homeCoordinates.lng);
     map = new google.maps.Map(document.getElementById('map'), {
         center: currLoc,
@@ -39,9 +40,7 @@ function getStoreCoordinates(product, descript) {
             for (var i = 0; i < results.length; i++) {
                 stores.push(results[i]);
             }
-            console.log(stores);
-            console.log("product: " + product);
-            console.log("descript: " + descript);
+            console.log("stores: " + stores);
         }
         else {
             console.error("Something went wrong in retrieving nearby stores: " + status);
@@ -50,16 +49,17 @@ function getStoreCoordinates(product, descript) {
 }
 
 // gets user's location
-function getLocation(product, descript) {
+function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
+            console.log("asdfasdfasdfa" + position.coords.latitude);
             var loc = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
             console.log(loc);
             homeCoordinates = loc;
-            revGeocode(product, descript);
+            revGeocode();
         }, function() {
             console.log('failed to get location...');
         });
@@ -68,15 +68,16 @@ function getLocation(product, descript) {
     }
 }
 
-function revGeocode(product, descript) {
+function revGeocode() {
     if(homeCoordinates) {
-        var geocoder = new google.maps.Geocoder;
+        var geocoder = new google.maps.Geocoder();
         geocoder.geocode({'location': homeCoordinates}, function(results, status) {
             if (status === google.maps.GeocoderStatus.OK) {
                 if (results[1]) {
                     console.log("successfully reversed geocode");
                     homeAddress = results[1].formatted_address;
-                    getStoreCoordinates(product, descript);
+                    console.log("homeAddress: " + homeAddress);
+                    getStoreCoordinates();
                 } else {
                     console.error('No results found');
                 }
@@ -87,33 +88,46 @@ function revGeocode(product, descript) {
     }
 }
 
-// product, descript, stores, name, homeAddress
+// , stores, name, homeAddress
 function sendPostMatesReq(product, descript, name) {
     var data = { "product": product, "descript": descript, "stores": stores,
-                "name": name, "homeAddress": homeAddress };
-    console.log("omgomgomg");
-    console.log(data);
-    console.log(stores);
-    $.post("https://re-fresh1.herokuapp.com/api/postmates", {
-            "product": product,
-            "descript": descript,
-            "stores": stores,
-            "name": name,
-            "homeAddress": homeAddress
-        }).done(function(success) {
-        console.log("Successfully created delivery: " + success);
+        "name": name };
+    console.log("data: " + data);
+    console.log("stores: " + stores);
+    console.log("product: " + product);
+    console.log("descript: " + descript);
+    console.log("name: " + name);
+    console.log("homeAddress: " + homeAddress);
+    //$.post("https://re-fresh1.herokuapp.com/api/postmates", {
+    //    "product": product,
+    //    "descript": descript,
+    //    "stores": stores,
+    //    "name": name,
+    //    "homeAddress": homeAddress
+    //}).done(function(success) {
+    //    console.log("Successfully created delivery: " + success);
+    //});
+
+    $.ajax({
+        method: "POST",
+        url: "https://re-fresh1.herokuapp.com/api/postmates",
+        data: data
+    })
+    .done(function(msg) {
+        alert("Data Saved: " + msg);
     });
+
     console.log('after');
 
     return {
-      kind: "delivery_quote",
-      id: "dqt_qUdje83jhdk",
-      created: "2016-01-23T10:20:43Z",
-      expires: "2016-01-26T10:09:03Z",
-      fee: 799,
-      currency: "usd",
-      dropoff_eta: "2016-01-23T12:14:03Z",
-      duration: 60
+        kind: "delivery_quote",
+        id: "dqt_qUdje83jhdk",
+        created: "2016-01-23T10:20:43Z",
+        expires: "2016-01-26T10:09:03Z",
+        fee: 799,
+        currency: "usd",
+        dropoff_eta: "2016-01-23T12:14:03Z",
+        duration: 60
     };
 }
 
