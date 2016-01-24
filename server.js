@@ -177,6 +177,12 @@ router.route('/recommend/recipe')
 		getRecipe(res);
 	});
 
+router.route('/recipe/:id')
+	.get(function(req, res) {
+		console.log("id is: " + req.params.id);
+		getRecipeInfo(req.params.id, res);
+	});
+
 function match(text){
 	var len=text.length;
 	var minLength=100;
@@ -360,6 +366,27 @@ function recRecipe(ingreds, res) {
 		console.log(url);
 		http.request( {"host" : host, "path": url}, callBack).end();
 	}*/
+}
+
+function getRecipeInfo(id, res) {
+	var resultJson = {};
+	unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/" + id + "/information")
+	.header("X-Mashape-Key", "68sljwduiumshFCNWmjQRwB9a1T1p1sYYvNjsni2hRqvH6NZUe")
+	.end(function (result) {
+	  console.log(result.body.spoonacularSourceUrl);
+	  resultJson.link = result.body.spoonacularSourceUrl;
+	  resultJson.time = result.body.readyInMinutes;
+	  resultJson.id = result.body.id;
+	  resultJson.title = result.body.title;
+	});
+
+	  unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/" + id + "/summary")
+		.header("X-Mashape-Key", "68sljwduiumshFCNWmjQRwB9a1T1p1sYYvNjsni2hRqvH6NZUe")
+		.end(function (result) {
+			resultJson.summary = result.body.summary;
+			console.log(resultJson);
+			res.json(resultJson);
+		});
 }
 
 function callBack(response) {
