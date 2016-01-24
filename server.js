@@ -43,8 +43,7 @@ var groceries = {
 	"potatoes" : [21, 35],
 	"broccoli" : [7, 14],
 	"bread" : [5, 7],
-	"eggs" : [30,30],
-	"tomat"
+	"eggs" : [30,30]
 };
 
 var cats = {
