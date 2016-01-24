@@ -604,8 +604,8 @@ var job = new CronJob('00 30 11 * * 0-6', function() {
   }, function () {
     /* This function is executed when the job stops */
   },
-  start: true, /* Start the job right now */
-  timeZone: 'America/Los_Angeles' /* Time zone of this job. */
+  true, /* Start the job right now */
+  'America/Los_Angeles' /* Time zone of this job. */
 );
 
 job.start();
