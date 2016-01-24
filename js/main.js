@@ -67,10 +67,10 @@ function reorder(element) {
 		element.style.backgroundImage = "url('images/loading.gif')";
 		element.style.backgroundSize = "22px 20px";
 		element.style.backgroundPosition = "12px 10px";
-		mainBackend();
+		//mainBackend();
 	 	setTimeout(function() {
 			displayReorder(element);
-		}, 9000);
+		}, 3000);
 	} else {
 		return false;
 	}
@@ -78,7 +78,8 @@ function reorder(element) {
 
 function displayReorder(element) {
 	//alert(element.previousSibling.innerHTML);
-	console.log(obj);
+	//console.log(obj);
+	var data = returnPostMateReq();
 	//console.log(data);
 	//console.log(element);
 	var time = Date.parse(data.dropoff_eta) - Date.parse(data.created);
