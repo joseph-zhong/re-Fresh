@@ -341,8 +341,14 @@ function getNDaysFromNow(n) {
 	return a;
 }
 
-function getDateDifference(date) {
+function getDayDifference(date) {
+	date = new Date(date);
 	var a = new Date();
+	//console.log("the exp date is " + date);
+	var timeDiff = date.getTime() - a.getTime();
+	//console.log("The time diff is : " + timeDiff);
+	var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+	return diffDays;
 
 }
 
@@ -368,20 +374,27 @@ function getRecipe(res) {
 function recRecipe(ingreds, res) {
 	console.log(ingreds);
 	var url = "";
-	if (ingreds.length > 0 && ingreds[0].expDate - (new Date())) {
+	var usedIngreds = [];
+	if (ingreds.length > 0 && getDayDifference(ingreds[0].expDate) <= 3) {
 		url += ingreds[0].name.trim();
-		for (var i = 1; i < Math.min(3, ingreds.length); i++) {
-			if ()
-			url += "," + ingreds[i].name.trim();
+		var count = 1;
+		for (var i = 1; count < Math.min(3, ingreds.length) && i < ingreds.length; i++) {
+			if (getDayDifference(ingreds[i].expDate) <= 3) {
+				url += "," + ingreds[i].name.trim();
+				count++;
+				usedIngreds.push(ingreds[i].name.trim());
+			}
 		}
-	}
-	console.log(encodeURIComponent(url)); 
-	unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?ingredients=" + url + "&limitLicense=false&number=5&ranking=1")
-	.header("X-Mashape-Key", "68sljwduiumshFCNWmjQRwB9a1T1p1sYYvNjsni2hRqvH6NZUe")
-	.header("Accept", "application/json")
-	.end(function (result) {
-	  res.json(result.body);
-	});
+		console.log(encodeURIComponent(url)); 
+		unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?ingredients=" + url + "&limitLicense=false&number=5&ranking=1")
+		.header("X-Mashape-Key", "68sljwduiumshFCNWmjQRwB9a1T1p1sYYvNjsni2hRqvH6NZUe")
+		.header("Accept", "application/json")
+		.end(function (result) {
+			result.body.usedIngreds = usedIngreds;
+		  res.json(result.body);
+		});
+	} 
+	res.json("nothing is going to expire");
 	/*var host = "https://api.edamam.com/"
 	var url = "search?q="
 	if (ingreds.length > 0) {
