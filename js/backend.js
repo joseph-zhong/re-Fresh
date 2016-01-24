@@ -118,7 +118,9 @@ function sendPostMatesReq(product, descript, name) {
     });
 
     console.log('after');
+}
 
+function returnPostMateReq() {
     return {
         kind: "delivery_quote",
         id: "dqt_qUdje83jhdk",
