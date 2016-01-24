@@ -163,8 +163,8 @@ router.route('/add/single')
 			var expirationd = getNDaysFromNow(groceries[name][0]);
 			var lifetime = groceries[name][0];
 			var descrp = req.body.description;
-			var category = req.body.category;
-			var price = req.body.price;
+			var category = cats[name];
+			var price = price[name];
 			var jsonObj = {
 				"name" : name,
 				"expDate" : expirationd,
