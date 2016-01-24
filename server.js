@@ -12,6 +12,13 @@ var options = {
 	api_key : "tFMOzm7J01GxnoPbGrHDAXGCsrGoeGrZR0Sao7Ny"
 };
 
+// Twilio Credentials 
+var accountSid = 'AC5924461284cb120e61dc3e381b7ef790'; 
+var authToken = '978880b8a6da831e6c982e6bf98b839d'; 
+ 
+//require the Twilio module and create a REST client 
+var client = require('twilio')(accountSid, authToken); 
+ 
 var eapp_id = "a750fdb2";
 var eapp_key = "143b365c3f4cf72c75d73802ce735614";
 
@@ -194,6 +201,19 @@ router.route('/add/newItem')
 
 router.route('/delete')
 	.post(function(req, res) {
+		if (req.body.needsTextNotification) {
+			client.messages.create({ 
+				to: "4256774061", 
+				from: "+14253104166", 
+				body: "Your item: "+ req.body.name +" has expired \n reorder here: https://re-fresh1.herokuapp.com/",   
+			}, function(err, message) {
+				if (err) {
+					console.log(err);
+				} else {
+					console.log(message.sid); 
+				}
+			});
+		}
 		parse.delete('foodEntry', req.body.id, function (err, response) {
 			if (err) {
 				res.json({"err": err});
@@ -529,24 +549,7 @@ function rmLastToken(obj) {
 	return str.join(" ");
 }
 
-// Twilio Credentials 
-var accountSid = 'AC5924461284cb120e61dc3e381b7ef790'; 
-var authToken = '978880b8a6da831e6c982e6bf98b839d'; 
- 
-//require the Twilio module and create a REST client 
-var client = require('twilio')(accountSid, authToken); 
- 
-client.messages.create({ 
-	to: "4256774061", 
-	from: "+14253104166", 
-	body: "Hi",   
-}, function(err, message) {
-	if (err) {
-		console.log(err);
-	} else {
-		console.log(message.sid); 
-	}
-});
+
 
 // START THE SERVER
 // =============================================================================
