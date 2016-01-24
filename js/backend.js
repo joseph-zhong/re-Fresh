@@ -133,6 +133,24 @@ function returnPostMateReq() {
     };
 }
 
+function sendPostMatesQuote(pickup_address, dropoff_address) {
+    var data = { "pickup_address": pickup_address, "dropoff_address" : dropoff_address, "stores": stores };
+    console.log("pickup_address: " + pickup_address);
+    console.log("dropoff_address: " + dropoff_address);
+    console.log("stores: " + stores);
+    console.log("homeAddress: " + homeAddress);
+    $.ajax({
+            method: "POST",
+            url: "https://re-fresh1.herokuapp.com/api/postmatesQuote",
+            data: data
+        })
+        .done(function(msg) {
+            alert("Data Saved: " + msg);
+        });
+
+    console.log('after');
+}
+
 function getRecommendedRecipes(callback) {
     var request = new XMLHttpRequest();
     request.onload = callback;

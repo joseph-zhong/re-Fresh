@@ -177,6 +177,16 @@ router.route('/postmates')
 				req.body.name, req.body.homeAddress, res);
 	});
 
+router.route('/postmatesQuote')
+	.post(function(req, res) {
+		console.log(req);
+		console.log("home: " + req.body.homeAddress);
+		console.log("store: " + req.body.store);
+		console.log("pickup_address: " + req.body.pickup_address);
+		console.log("dropoff_address: " + req.body.dropoff_address);
+		createAndPostQuote(req.body.pickup_address, req.body.dropoff_address);
+	});
+
 router.route('/recommend/recipe')
 	.get(function(req, res) {
 		getRecipe(res);
@@ -402,7 +412,7 @@ function callBack(response) {
 function postDelivery(quote_id, manifest,
 					  manifest_reference, pickup_name, pickup_address, pickup_phone_number,
 					  pickup_business_name, pickup_notes, dropoff_name, dropoff_address,
-					  dropoff_phone_number, dropoff_business_name, dropoff_notes, res2client) {
+					  dropoff_phone_number, dropoff_business_name, dropoff_notes) {
 
 	var delivery = {"quote_id" : quote_id, "manifest" : manifest,
 		"manifest_reference" : manifest_reference, "pickup_name" : pickup_name,
@@ -428,7 +438,7 @@ function postDelivery(quote_id, manifest,
 	});
 }
 
-function createDelivery(product, descript, stores, name, homeAddress, res2client) {
+function createDelivery(product, descript, stores, name, homeAddress) {
 	var storeAddress = stores[Math.random() * stores.length + 1].formatted_address;
 	//storeAddress = rmLastToken(storeAddress);
 	console.log(storeAddress);
@@ -436,8 +446,18 @@ function createDelivery(product, descript, stores, name, homeAddress, res2client
 	//console.log(homeAddress);
 	var dropoff_name = name ? name : "My Home";
 	while (!homeAddress) {}
-	postDelivery(null, product, null, "Grocery Store", storeAddress, "1231231234",
-			null, descript, dropoff_name, homeAddress, "1231231234", dropoff_name, descript, res2client);
+	postDelivery(null, null, null, "Grocery Store", storeAddress, "1231231234",
+			null, descript, dropoff_name, homeAddress, "1231231234", dropoff_name, descript);
+}
+
+function createAndPostQuote(pick_up_address, dropoff_address) {
+	var delivery = {
+		pickup_address: pick_up_address,
+		dropoff_address: dropoff_address
+	};
+	postmates.quote(delivery, function(err, res) {
+		console.log("eta: " + res.body.dropoff_eta);
+	});
 }
 
 function rmLastToken(obj) {
