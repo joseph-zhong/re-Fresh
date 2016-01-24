@@ -54,7 +54,7 @@ var cats = {
 
 var descriptions = {
 	"beef" : "8 oz",
-	"milk" : "2 gallons",
+	"milk" : "1 gallons",
 	"chicken" : "16 oz",
 	"bacon" : "16 oz",
 	"salmon" : "9 oz",
@@ -63,7 +63,7 @@ var descriptions = {
 	"potatoes" : "1 sack",
 	"broccoli" : "4 bunches",
 	"bread" : "1 loaf",
-	"eggs" : "2 dozen"
+	"eggs" : "1 dozen"
 };
 
 var abrv = {'bf' : 'beef',
