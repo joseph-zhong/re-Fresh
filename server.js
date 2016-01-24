@@ -54,7 +54,7 @@ var descriptions = {
 	"apples" : "10 ct",
 	"oranges" : "10 ct",
 	"potatoes" : "1 sack",
-	"broccoli" : "4 stocks",
+	"broccoli" : "4 bunches",
 	"bread" : "1 loaf",
 	"eggs" : "2 dozen"
 };
@@ -71,6 +71,20 @@ var abrv = {'bf' : 'beef',
   'brd' : 'bread',
   "ggs" : "eggs"
 };
+
+var price = {
+	"beef" : "10.49";
+	"milk" : "8.29",
+	"chicken" : "6.98",
+	"bacon" : "6.99",
+	"salmon" : "8.98",
+	"apples" : "11.99",
+	"oranges" : "5.99",
+	"potatoes" : "8.98",
+	"broccoli" : "10.99",
+	"bread" : "5.99",
+	"eggs" : "4.5"
+}
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -150,12 +164,14 @@ router.route('/add/single')
 			var lifetime = groceries[name][0];
 			var descrp = req.body.description;
 			var category = req.body.category;
+			var price = req.body.price;
 			var jsonObj = {
 				"name" : name,
 				"expDate" : expirationd,
 				"lifetime" : lifetime,
 				"description" : descrp,
-				"category": category
+				"category": category,
+				"price" : price
 			};
 			parse.insert('items', josnObj, function (err, response) {
 			  console.log(response);
@@ -309,7 +325,8 @@ function addItemToParse(food) {
 		"expDate" : getNDaysFromNow(groceries[food][0]),
 		"lifetime" : groceries[food][0],
 		"description" : descriptions[food],
-		"category" : cats[food]
+		"category" : cats[food],
+		"price" : price[food]
 	};
 
 	parse.insert('foodEntry', item, function (err, response) {
