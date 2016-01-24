@@ -120,6 +120,19 @@ function sendPostMatesReq(product, descript, name) {
     console.log('after');
 }
 
+function returnPostMateReq() {
+    return {
+        kind: "delivery_quote",
+        id: "dqt_qUdje83jhdk",
+        created: "2016-01-23T10:20:43Z",
+        expires: "2016-01-26T10:09:03Z",
+        fee: 799,
+        currency: "usd",
+        dropoff_eta: "2016-01-23T10:22:03Z",
+        duration: 60
+    };
+}
+
 stores = [
     '300 E Baltimore Ave, Lansdowne, PA 19050, United States',
     '4001 Walnut St, Philadelphia, PA 19104, United States',
