@@ -38,6 +38,7 @@ a {
 	background-position:calc(50% - 100px) 19px;
 	background-repeat:no-repeat;
 	padding-top:4px;
+	cursor:pointer;
 }
 
 #deletebutton h1 {

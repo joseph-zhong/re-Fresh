@@ -96,12 +96,12 @@ function updateTime(startTime, minutes, element) {
 	var postName = $(element).closest('.item').children('.itemname').html();
 	var postDescription = $(element).closest('.item').children('.itemdescription').html();
 	if(Date.now() > (startTime + minutes)) {
-		$.post("http://re-fresh1.herokuapp.com/api/add/single", {
+		$.post("https://re-fresh1.herokuapp.com/api/add/single", {
 			name: postName,
 			description: postDescription
 		})
 		.done(function(data) {
-			$.post("http://re-fresh1.herokuapp.com/api/delete", {
+			$.post("https://re-fresh1.herokuapp.com/api/delete", {
 				isExpired: false,
 				name: postName,
 				id: element.id
@@ -191,7 +191,7 @@ function triggerTouch(element) {
 
 function deleteToggled() {
 	var item = document.getElementsByClassName("toggle")[0];
-	$.post("http://re-fresh1.herokuapp.com/api/delete", {
+	$.post("https://re-fresh1.herokuapp.com/api/delete", {
 		isExpired: false,
 		id: item.id
 	})
