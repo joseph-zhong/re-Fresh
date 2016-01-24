@@ -372,11 +372,12 @@ function getRecipe(res) {
 }
 
 function recRecipe(ingreds, res) {
-	console.log(ingreds);
+	//console.log(ingreds);
 	var url = "";
 	var usedIngreds = [];
 	if (ingreds.length > 0 && getDayDifference(ingreds[0].expDate) <= 3) {
 		url += ingreds[0].name.trim();
+		usedIngreds.push(url);
 		var count = 1;
 		for (var i = 1; count < Math.min(3, ingreds.length) && i < ingreds.length; i++) {
 			if (getDayDifference(ingreds[i].expDate) <= 3) {
@@ -390,11 +391,13 @@ function recRecipe(ingreds, res) {
 		.header("X-Mashape-Key", "68sljwduiumshFCNWmjQRwB9a1T1p1sYYvNjsni2hRqvH6NZUe")
 		.header("Accept", "application/json")
 		.end(function (result) {
-			result.body.usedIngreds = usedIngreds;
-		  res.json(result.body);
+			//result.body.push({"usedIngreds" : usedIngreds});
+			//console.log(result.body);
+		  	res.json({data: result.body, usedIngreds: usedIngreds});
 		});
-	} 
-	res.json("nothing is going to expire");
+	} else {
+		res.json("nothing is going to expire");
+	}
 	/*var host = "https://api.edamam.com/"
 	var url = "search?q="
 	if (ingreds.length > 0) {
