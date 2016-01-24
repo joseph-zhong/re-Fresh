@@ -224,7 +224,7 @@ router.route('/expired')
 		client.messages.create({ 
 				to: USER_CELL, 
 				from: MSGSRVC_NUM, 
-				body: "Your item: "+ req.body.name + " has expired \n" + 
+				body: " An item is about to expire \n" + 
 					 " reorder here: https://re-fresh1.herokuapp.com/",   
 			}, function(err, message) {
 				if (err) {
