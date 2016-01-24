@@ -144,7 +144,7 @@ stores = [
 
 function mainBackend() {
     var objs = sendPostMatesQuote(stores[parseInt(Math.random() * stores.length)], homeAddress);
-    while(!obj) {}
+    while(!objs) {}
     return objs;
 }
 
