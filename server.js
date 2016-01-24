@@ -73,7 +73,7 @@ var abrv = {'bf' : 'beef',
 };
 
 var price = {
-	"beef" : "10.49";
+	"beef" : "10.49",
 	"milk" : "8.29",
 	"chicken" : "6.98",
 	"bacon" : "6.99",
@@ -341,6 +341,11 @@ function getNDaysFromNow(n) {
 	return a;
 }
 
+function getDateDifference(date) {
+	var a = new Date();
+
+}
+
 function getRecipe(res) {
 	parse.find('foodEntry', '', function (err, response) {
 		//console.log(response);
@@ -363,9 +368,10 @@ function getRecipe(res) {
 function recRecipe(ingreds, res) {
 	console.log(ingreds);
 	var url = "";
-	if (ingreds.length > 0) {
+	if (ingreds.length > 0 && ingreds[0].expDate - (new Date())) {
 		url += ingreds[0].name.trim();
 		for (var i = 1; i < Math.min(3, ingreds.length); i++) {
+			if ()
 			url += "," + ingreds[i].name.trim();
 		}
 	}
