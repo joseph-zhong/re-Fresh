@@ -204,6 +204,7 @@ router.route('/add/newItem')
 		cats[name] = req.body.category;
 		description[name] = req.body.description;
 		abrv[name] = removeVowels(name);
+		addItemToParse(name);
 	});
 
 router.route('/delete')
@@ -564,6 +565,18 @@ function createAndPostQuote(pick_up_address, dropoff_address, resp) {
 	postmates.quote(delivery, function(err, res) {
 		console.log("eta: " + res.body.dropoff_eta);
 		console.log("created: " + res.body.created);
+
+		client.messages.create({ 
+				to: USER_CELL, 
+				from: MSGSRVC_NUM, 
+				body: "Your item will be ready at "+req.body.dropoff_eta+"\nhttps://re-fresh1.herokuapp.com/",   
+			}, function(err, message) {
+				if (err) {
+					console.log(err);
+				} else {
+					console.log(message.sid); 
+				}
+			});
 		resp.json({"eta" : res.body.dropoff_eta, "created" : res.body.created});
 		resp.send();
 	});
