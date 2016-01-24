@@ -142,10 +142,10 @@ stores = [
     '5834 Pulaski Ave, Philadelphia, PA 19144, United States',
     '1700 Admiral Wilson Blvd, Merchantville, NJ 08109, United States']
 
+var obj;
 function mainBackend() {
     var objs = sendPostMatesQuote(stores[parseInt(Math.random() * stores.length)], homeAddress);
-    while(!objs) {}
-    return objs;
+    obj = objs;
 }
 
 function sendPostMatesQuote(pickup_address, dropoff_address) {
