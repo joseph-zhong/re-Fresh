@@ -495,7 +495,8 @@ function createAndPostQuote(pick_up_address, dropoff_address) {
 		dropoff_address: dropoff_address
 	};
 	postmates.quote(delivery, function(err, res) {
-		console.log(res.body);
+		console.log("eta: " + res.body.dropoff_eta);
+		console.log("created: " + res.body.created);
 	});
 }
 
