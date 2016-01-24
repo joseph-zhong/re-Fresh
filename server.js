@@ -84,7 +84,7 @@ var price = {
 	"broccoli" : 10.99,
 	"bread" : 5.99,
 	"eggs" : 4.5
-}
+};
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -495,7 +495,7 @@ function createAndPostQuote(pick_up_address, dropoff_address) {
 		dropoff_address: dropoff_address
 	};
 	postmates.quote(delivery, function(err, res) {
-		console.log("eta: " + res.body.dropoff_eta);
+		console.log("eta: " + res.body);
 	});
 }
 
