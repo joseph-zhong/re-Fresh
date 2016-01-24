@@ -175,12 +175,23 @@ router.route('/add/single')
 				"category": category,
 				"price" : priceTag
 			};
-			parse.insert('items', jsonObj, function (err, response) {
+			parse.insert('foodEntry', jsonObj, function (err, response) {
 			  console.log(response);
 			});
 		}
 
 		res.json("done");
+	});
+
+router.route('/delete')
+	.post(function(req, res) {
+		parse.delete('foodEntry', req.body.id, function (err, response) {
+			if (err) {
+				res.json({"err": err});
+			} else {
+				res.json({"success" : response});
+			}
+		})
 	});
 
 router.route('/postmates')
