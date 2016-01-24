@@ -169,7 +169,7 @@ router.route('/postmates')
 	.post(function(req, res) {
 		console.log(req.body.product);
 		console.log(req.body.descript);
-		console.log(req.body.store);
+		console.log("store: " + req.body.store);
 		console.log(req.body.name);
 		console.log(req.body.homeAddress);
 		createDelivery(req.body.product, req.body.descript, req.body.stores,

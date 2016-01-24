@@ -70,13 +70,12 @@ function getLocation(product, descript) {
 
 function revGeocode(product, descript) {
     if(homeCoordinates) {
-        var geocoder = new google.maps.Geocoder();
+        var geocoder = new google.maps.Geocoder;
         geocoder.geocode({'location': homeCoordinates}, function(results, status) {
             if (status === google.maps.GeocoderStatus.OK) {
                 if (results[1]) {
                     console.log("successfully reversed geocode");
                     homeAddress = results[1].formatted_address;
-
                     getStoreCoordinates(product, descript);
                 } else {
                     console.error('No results found');
@@ -94,7 +93,7 @@ function sendPostMatesReq(product, descript, name) {
                 "name": name, "homeAddress": homeAddress };
     console.log("omgomgomg");
     console.log(data);
-
+    console.log(stores);
     $.post("https://re-fresh1.herokuapp.com/api/postmates", {
             "product": product,
             "descript": descript,
