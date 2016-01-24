@@ -67,6 +67,8 @@
   margin-right:30px;
   font-weight:bold;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  position:relative;
+  z-index:1;
 }
 .c100 > span {
   position: absolute;

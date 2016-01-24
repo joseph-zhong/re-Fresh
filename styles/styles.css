@@ -216,6 +216,7 @@ input {
 	width:100%;
 	height:auto;
 	/*background-color:#e74c3c;*/
+	z-index:999999!important;
 	background-color:#3d566e;
 	position: fixed;
 	bottom: 0;

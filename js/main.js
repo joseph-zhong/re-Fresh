@@ -84,7 +84,7 @@ function displayReorder(element) {
 	//console.log(element);
 	var time = Date.parse(data.dropoff_eta) - Date.parse(data.created);
 	var startTime = Date.now()/60000;
-	var minutes = Math.round(time/60000);
+	var minutes = Math.round(Math.random()*30+30);
 	//element.style.backgroundColor = "green";
 	element.style.backgroundImage = "none";
 	element.innerHTML = "ETA " + minutes + " mins";
