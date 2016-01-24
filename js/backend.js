@@ -96,3 +96,17 @@ function sendPostMatesReq(product, descript, stores, name, homeAddress) {
         }
     });
 }
+
+function getRecommendedRecipes(callback) {
+    var request = new XMLHttpRequest();
+    request.onload = callback;
+    ajax.open("GET", "https://re-fresh1.herokuapp.com/api/recommend/recipe", true);
+    ajax.send();
+}
+
+function getRecipeInfo(id, callback) {
+    var request = new XMLHttpRequest();
+    request.onload = callback;
+    ajax.open("GET", "https://re-fresh1.herokuapp.com/api/recipe/" + id, true);
+    ajax.send();
+}
