@@ -177,9 +177,10 @@ router.route('/recommend/recipe')
 		getRecipe(res);
 	});
 
-router.route('recipe/:id')
+router.route('/recipe/:id')
 	.get(function(req, res) {
-		res.json(getRecipeInfo(req.params.id));
+		console.log("id is: " + req.params.id);
+		getRecipeInfo(req.params.id, res);
 	});
 
 function match(text){
@@ -367,7 +368,7 @@ function recRecipe(ingreds, res) {
 	}*/
 }
 
-function getRecipeInfo(id) {
+function getRecipeInfo(id, res) {
 	var resultJson = {};
 	unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/" + id + "/information")
 	.header("X-Mashape-Key", "68sljwduiumshFCNWmjQRwB9a1T1p1sYYvNjsni2hRqvH6NZUe")
@@ -384,7 +385,7 @@ function getRecipeInfo(id) {
 		.end(function (result) {
 			resultJson.summary = result.body.summary;
 			console.log(resultJson);
-			return resultJson;
+			res.json(resultJson);
 		});
 }
 
