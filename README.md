@@ -4,8 +4,8 @@ Manage your food simply: order, track and replenish your perishable items.
 
 ## General
 
-[Devpost Submission](http://devpost.com/software/refresh-xjng7u)
-[Demo](https://www.youtube.com/watch?v=yOcjrTD9Xlo)
+- [Devpost Submission](http://devpost.com/software/refresh-xjng7u)
+- [Demo](https://www.youtube.com/watch?v=yOcjrTD9Xlo)
 
 ## Inspiration
 We wanted to build an incredibly simple IoT Solution for tracking perishables, so that you'd never waste food due to expiration dates again.
