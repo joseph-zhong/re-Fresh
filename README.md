@@ -5,7 +5,7 @@ Manage your food simply: order, track and replenish your perishable items.
 ## General
 
 - [Devpost Submission](http://devpost.com/software/refresh-xjng7u)
-
+- [Video Demo](https://www.youtube.com/watch?v=yOcjrTD9Xlo)
 [![Video Demo](http://img.youtube.com/vi/yOcjrTD9Xlo/0.jpg)](https://www.youtube.com/watch?v=yOcjrTD9Xlo)
 
 
